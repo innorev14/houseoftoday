@@ -183,3 +183,6 @@ DEBUG_TOOLBAR_PANELS = [
 
 AUTH_USER_MODEL = 'accounts.User'
 
+AUTHENTICATION_BACKENDS = [
+   'accounts.backends.CustomUserBackend',
+]
