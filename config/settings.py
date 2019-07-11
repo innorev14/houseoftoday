@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'rest_framework',
     'rest_framework_swagger',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -89,7 +90,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'base_config',
+        'NAME': 'house_of_today',
         'USER': RDS_MASTER_ID,
         'PASSWORD': RDS_MASTER_PW,
         'HOST':'house-of-today.cnuxbldx8kex.ap-northeast-2.rds.amazonaws.com',
@@ -180,4 +181,5 @@ DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.redirects.RedirectsPanel',
 ]
 
+AUTH_USER_MODEL = 'accounts.User'
 
