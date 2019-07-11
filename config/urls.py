@@ -17,12 +17,15 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from rest_framework_swagger.views import get_swagger_view
+from rest_framework.authtoken.views import obtain_auth_token
 
 schema_view = get_swagger_view(title='House of Today(clone) API')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/doc/', schema_view),
+    path('api/get_token/', obtain_auth_token),
+    path('accounts/', include('accounts.urls')),
 ]
 
 if settings.DEBUG:

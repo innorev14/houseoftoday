@@ -14,3 +14,6 @@ FinalProject - House of Today API
     - feat: Start django Project(base config)
     - feat: Connect Amazon Web Services - S3, RDS
     - feat: Make Project app - accounts, products
+    - feat: Make User model
+    - feat: Make User email - admission
+    - feat: Make Token
