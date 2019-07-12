@@ -17,3 +17,7 @@ FinalProject - House of Today API
     - feat: Make User model
     - feat: Make User email - admission
     - feat: Make Token
+    
+- 19.07.12
+    - feat: Make products - models
+    
