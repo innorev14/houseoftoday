@@ -26,6 +26,8 @@ urlpatterns = [
     path('api/doc/', schema_view),
     path('api/get_token/', obtain_auth_token),
     path('accounts/', include('accounts.urls')),
+    path('products/', include('products.urls')),
+
 ]
 
 if settings.DEBUG:
