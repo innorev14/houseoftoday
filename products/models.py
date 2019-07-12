@@ -7,6 +7,8 @@ class Categorys(models.Model):
     name = models.CharField(max_length=45)
     image = models.ImageField()
 
+    def __str__(self):
+        return self.name
 
 class Products(models.Model):
     name = models.CharField(max_length=45)
@@ -32,14 +34,22 @@ class Products(models.Model):
     deliver_fee_diff = models.CharField(max_length=100, default='없음') # # 배송 관련 안내 - 지역별 차등배송비
     created = models.DateField(auto_now_add=True)  # 생성일자
 
+    def __str__(self):
+        return self.name
+
 class Product_thumnail(models.Model):
     pd_image = models.ImageField()
     product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='product_thumnail')
 
+    def __str__(self):
+        return self.pd_image
 
 class Product_detail_images(models.Model):
     pd_detail_image = models.ImageField()
     product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='product_detail_images')
+
+    def __str__(self):
+        return self.pd_detail_image
 
 class Product_options(models.Model):
     type = models.CharField(max_length=45)  # 상품 구별 - 상품/색상 등 구별하는 것.
@@ -47,7 +57,8 @@ class Product_options(models.Model):
     option_price = models.PositiveIntegerField() # 옵션선택 - 가격만 나오도록.
     product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='product_options')
 
-
+    def __str__(self):
+        return self.option_name
 
 
 
