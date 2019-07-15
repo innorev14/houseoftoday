@@ -42,14 +42,14 @@ class Product_thumnail(models.Model):
     product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='product_thumnail')
 
     def __str__(self):
-        return self.pd_image
+        return self.pd_image.name
 
 class Product_detail_images(models.Model):
     pd_detail_image = models.ImageField()
     product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='product_detail_images')
 
     def __str__(self):
-        return self.pd_detail_image
+        return self.pd_detail_image.name
 
 class Product_options(models.Model):
     type = models.CharField(max_length=45)  # 상품 구별 - 상품/색상 등 구별하는 것.
@@ -59,8 +59,6 @@ class Product_options(models.Model):
 
     def __str__(self):
         return self.option_name
-
-
 
 class reviews(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')
@@ -75,7 +73,6 @@ class reviews(models.Model):
     helpful = models.ManyToManyField(User, related_name='helpful_reviews', blank=True)
     created = models.DateField(auto_now_add=True) # 생성일자
 
-
 class PD_Question(models.Model):
     type = models.CharField(max_length=30) # 유형
     comment = models.TextField() # 답변내용
@@ -83,7 +80,6 @@ class PD_Question(models.Model):
     created = models.DateField(auto_now_add=True) # 생성일자
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='question')
     product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='question')
-
 
 class PD_Answer(models.Model):
     comment = models.TextField() # 답변내용
