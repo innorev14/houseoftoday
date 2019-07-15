@@ -5,7 +5,7 @@ from accounts.models import User
 
 class Categorys(models.Model):
     name = models.CharField(max_length=45)
-    image = models.ImageField()
+    image = models.ImageField(upload_to='store/category/%Y/%m/%d', blank=True)
 
     def __str__(self):
         return self.name
@@ -38,14 +38,14 @@ class Products(models.Model):
         return self.name
 
 class Product_thumnail(models.Model):
-    pd_image = models.ImageField()
+    pd_image = models.ImageField(upload_to='store/thumnail/%Y/%m/%d', blank=True)
     product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='product_thumnail')
 
     def __str__(self):
         return self.pd_image.name
 
 class Product_detail_images(models.Model):
-    pd_detail_image = models.ImageField()
+    pd_detail_image = models.ImageField(upload_to='store/detail/%Y/%m/%d', blank=True)
     product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='product_detail_images')
 
     def __str__(self):
@@ -67,7 +67,7 @@ class reviews(models.Model):
     pd_price = models.IntegerField()  # 가격
     pd_design = models.IntegerField()  # 디자인
     pd_delivery = models.IntegerField()  # 배송
-    rv_image = models.ImageField() # 리뷰전용 이미지
+    rv_image = models.ImageField(upload_to='store/review/%Y/%m/%d', blank=True) # 리뷰전용 이미지
     comment = models.TextField() # 내용
     # helpful_counts = models.IntegerField() # 도움이 돼요.
     helpful = models.ManyToManyField(User, related_name='helpful_reviews', blank=True)

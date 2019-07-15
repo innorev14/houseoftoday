@@ -26,5 +26,7 @@ FinalProject - House of Today API
 - 19.07.15
     - fix: serializers class name - Exclude the name 'List'
     - fix: Product models - Products/detail_mfc charField max length 50 -> 200 and migrate
+    - fix: Product models - Products/Product_thumnail, Product_detail_images \_\_str\_\_ return value
+    - fix: Product models - Add ImageField path
     
     
