@@ -3,7 +3,7 @@ from .models import User
 
 # 유저 목록에 출력될 형식 지정
 
-class UserListSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
    class Meta:
        model = User
        fields = ['id', 'username', 'email', 'gender', 'birthday', 'message', 'profile']

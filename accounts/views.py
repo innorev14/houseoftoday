@@ -1,4 +1,4 @@
-from .serializers import UserListSerializer, UserCreateSerializer ,UserModifySerializer, UserDetailSerializer
+from .serializers import *
 from django.contrib.auth import get_user_model
 from rest_framework import generics
 from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
@@ -16,7 +16,7 @@ Destroy : Delete
 class UserListView(generics.ListAPIView):
    # renderer_classes = [JSONRenderer] # JSON 형식으로만 받고 싶은 경우
    queryset = get_user_model().objects.all()
-   serializer_class = UserListSerializer
+   serializer_class = UserSerializer
    filterset_fields = ('email', 'username')
 
    def get_queryset(self):
