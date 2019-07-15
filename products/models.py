@@ -22,7 +22,7 @@ class Products(models.Model):
     detail_auth = models.CharField(max_length=45) # 상품 상세정보 - KC인증 필 유무
     detail_cost = models.CharField(max_length=45) # 상품 상세정보 - 배송 유무
     detail_standard = models.CharField(max_length=100) # 상품 상세정보 - 품질보증기준
-    detail_mfc = models.CharField(max_length=50) # 상품 상세정보 - 제조자
+    detail_mfc = models.CharField(max_length=200) # 상품 상세정보 - 제조자
     detail_mis = models.CharField(max_length=45) # 상품 상세정보 - 제조국
     detail_as = models.CharField(max_length=100) # 상품 상세정보 - A/S 책임자 및 전화번호
     return_fee = models.CharField(max_length=100) # 교환 및 환불 - 반품/배송비

@@ -9,5 +9,5 @@ from rest_framework.renderers import JSONRenderer
 class CategoryListView(generics.ListAPIView):
     # renderer_classes = [JSONRenderer]
     queryset = Categorys.objects.all()
-    serializer_class = CategoryListSerializer
+    serializer_class = CategorySerializer
     permission_classes = (AllowAny,)
