@@ -25,6 +25,6 @@ FinalProject - House of Today API
     
 - 19.07.15
     - fix: serializers class name - Exclude the name 'List'
-    - fix: Product models - Products/detail_mfc charField max length 50 -> 200
+    - fix: Product models - Products/detail_mfc charField max length 50 -> 200 and migrate
     
     
