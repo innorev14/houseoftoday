@@ -42,14 +42,14 @@ class Product_thumnail(models.Model):
     product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='product_thumnail')
 
     def __str__(self):
-        return self.pd_image.name
+        return self.pd_image
 
 class Product_detail_images(models.Model):
     pd_detail_image = models.TextField()
     product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='product_detail_images')
 
     def __str__(self):
-        return self.pd_detail_image.name
+        return self.pd_detail_image
 
 class Product_options(models.Model):
     type = models.CharField(max_length=45)  # 상품 구별 - 상품/색상 등 구별하는 것.
