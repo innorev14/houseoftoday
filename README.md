@@ -31,6 +31,7 @@ FinalProject - House of Today API
     
 - 19.07.16
     - fix: Product models - Products/detail_cost, detail_standard charField -> TextField
-    - feat: pip install django-cors-headers and add settings.py
+    - feat: pip install django-cors-headers and update settings.py
+    - fix: Product models - ImageField -> TextField
     
     
