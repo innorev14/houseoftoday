@@ -18,8 +18,8 @@ class Products(models.Model):
     detail_name = models.CharField(max_length=100) # 상품 상세정보 - 품명 및 모델명
     detail_color = models.CharField(max_length=30) # 상품 상세정보 - 색상
     detail_size = models.CharField(max_length=100) # 상품 상세정보 - 크기
-    detail_component = models.CharField(max_length=45) # 상품 상세정보 - 구성품
-    detail_auth = models.CharField(max_length=45) # 상품 상세정보 - KC인증 필 유무
+    detail_component = models.TextField(max_length=45) # 상품 상세정보 - 구성품
+    detail_auth = models.TextField(max_length=45) # 상품 상세정보 - KC인증 필 유무
     detail_cost = models.TextField() # 상품 상세정보 - 배송 유무
     detail_standard = models.TextField() # 상품 상세정보 - 품질보증기준
     detail_mfc = models.CharField(max_length=200) # 상품 상세정보 - 제조자
@@ -42,14 +42,14 @@ class Product_thumnail(models.Model):
     product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='product_thumnail')
 
     def __str__(self):
-        return self.pd_image.name
+        return self.pd_image
 
 class Product_detail_images(models.Model):
     pd_detail_image = models.TextField()
     product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='product_detail_images')
 
     def __str__(self):
-        return self.pd_detail_image.name
+        return self.pd_detail_image
 
 class Product_options(models.Model):
     type = models.CharField(max_length=45)  # 상품 구별 - 상품/색상 등 구별하는 것.
