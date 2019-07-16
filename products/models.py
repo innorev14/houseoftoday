@@ -28,9 +28,9 @@ class Products(models.Model):
     return_fee = models.CharField(max_length=100) # 교환 및 환불 - 반품/배송비
     exchange_fee = models.CharField(max_length=100) # 교환 및 환불 - 교환/배송비
     return_address = models.TextField() # 교환 및 환불 - 반품 주소
-    deliver = models.CharField(max_length=100, default='업체직접배송') # 배송 관련 안내 - 배송
+    deliver = models.CharField(max_length=100, default='일반택배배송') # 배송 관련 안내 - 배송
     deliver_fee = models.CharField(max_length=100, default='무료배송') # 배송 관련 안내 - 배송비
-    deliver_no_go = models.CharField(max_length=100, default='배송불가지역이 없습니다.') # 배송 관련 안내 - 배송불가지역
+    deliver_no_go = models.CharField(max_length=100, default='배송불가 지역이 없습니다.') # 배송 관련 안내 - 배송불가지역
     deliver_fee_diff = models.CharField(max_length=100, default='없음') # # 배송 관련 안내 - 지역별 차등배송비
     created = models.DateField(auto_now_add=True)  # 생성일자
 
@@ -38,14 +38,14 @@ class Products(models.Model):
         return self.name
 
 class Product_thumnail(models.Model):
-    pd_image = models.ImageField(upload_to='store/thumnail/%Y/%m/%d', blank=True)
+    pd_image = models.TextField()
     product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='product_thumnail')
 
     def __str__(self):
         return self.pd_image.name
 
 class Product_detail_images(models.Model):
-    pd_detail_image = models.ImageField(upload_to='store/detail/%Y/%m/%d', blank=True)
+    pd_detail_image = models.TextField()
     product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='product_detail_images')
 
     def __str__(self):
@@ -67,7 +67,7 @@ class reviews(models.Model):
     pd_price = models.IntegerField()  # 가격
     pd_design = models.IntegerField()  # 디자인
     pd_delivery = models.IntegerField()  # 배송
-    rv_image = models.ImageField(upload_to='store/review/%Y/%m/%d', blank=True) # 리뷰전용 이미지
+    rv_image = models.TextField() # 리뷰전용 이미지
     comment = models.TextField() # 내용
     # helpful_counts = models.IntegerField() # 도움이 돼요.
     helpful = models.ManyToManyField(User, related_name='helpful_reviews', blank=True)
