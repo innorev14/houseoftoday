@@ -5,7 +5,7 @@ from accounts.models import User
 
 class Categorys(models.Model):
     name = models.CharField(max_length=45)
-    image = models.ImageField(upload_to='store/category/%Y/%m/%d', blank=True)
+    image = models.TextField()
 
     def __str__(self):
         return self.name
@@ -17,9 +17,9 @@ class Products(models.Model):
     category = models.ForeignKey(Categorys, on_delete=models.SET_NULL, related_name='category', null=True)
     detail_name = models.CharField(max_length=100) # 상품 상세정보 - 품명 및 모델명
     detail_color = models.CharField(max_length=30) # 상품 상세정보 - 색상
-    detail_size = models.CharField(max_length=100) # 상품 상세정보 - 크기
-    detail_component = models.TextField(max_length=45) # 상품 상세정보 - 구성품
-    detail_auth = models.TextField(max_length=45) # 상품 상세정보 - KC인증 필 유무
+    detail_size = models.CharField(max_length=200) # 상품 상세정보 - 크기
+    detail_component = models.TextField() # 상품 상세정보 - 구성품
+    detail_auth = models.TextField() # 상품 상세정보 - KC인증 필 유무
     detail_cost = models.TextField() # 상품 상세정보 - 배송 유무
     detail_standard = models.TextField() # 상품 상세정보 - 품질보증기준
     detail_mfc = models.CharField(max_length=200) # 상품 상세정보 - 제조자
