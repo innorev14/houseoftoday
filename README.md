@@ -29,4 +29,8 @@ FinalProject - House of Today API
     - fix: Product models - Products/Product_thumnail, Product_detail_images \_\_str\_\_ return value
     - fix: Product models - Add ImageField path
     
+- 19.07.16
+    - fix: Product models - Products/detail_cost, detail_standard charField -> TextField
+    - feat: pip install django-cors-headers and add settings.py
+    
     
