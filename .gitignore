@@ -5,3 +5,4 @@ __pycache__
 .idea/
 db.sqlite3
 aws_secret_key.py
+product_crawling.py
