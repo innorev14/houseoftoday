@@ -36,4 +36,5 @@ FinalProject - House of Today API
     - fix: Product models - Products/detail_component, detail_auth // CharField -> TextField Change.
     - feat: product_crawling.py and add gitignore
     - feat: pip install bs4
+    - feat: pip install ipython and add Product_crawling.ipynb
     
