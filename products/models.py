@@ -12,7 +12,7 @@ class Categorys(models.Model):
 
 class Products(models.Model):
     name = models.CharField(max_length=45)
-    price = models.PositiveIntegerField()
+    price = models.IntegerField()
     brand_name = models.CharField(max_length=45)
     category = models.ForeignKey(Categorys, on_delete=models.SET_NULL, related_name='category', null=True)
     detail_name = models.CharField(max_length=100) # 상품 상세정보 - 품명 및 모델명
@@ -64,7 +64,7 @@ class reviews(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')
     product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='reviews')
     pd_durability = models.IntegerField() # 내구성
-    pd_price = models.PositiveIntegerField()  # 가격
+    pd_price = models.IntegerField()  # 가격
     pd_design = models.IntegerField()  # 디자인
     pd_delivery = models.IntegerField()  # 배송
     rv_image = models.TextField() # 리뷰전용 이미지

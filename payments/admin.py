@@ -4,7 +4,7 @@ from .models import Order
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['imp_uid', 'user', 'name', 'amount_html', 'status_html', 'paid_at', 'receipt_link']
+    list_display = ['imp_uid', 'user', 'name', 'price_html', 'status_html', 'paid_at', 'receipt_link']
     actions = ['do_update', 'do_cancel']
 
     def do_update(self, request, queryset):
