@@ -16,7 +16,6 @@ from aws_secret_key import *
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -27,7 +26,6 @@ SECRET_KEY = 'krrxp*=dxxne+u)8wbag35zl%lkfq1xz%jpl_m3ine!m=t11#z'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -82,7 +80,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
@@ -99,11 +96,10 @@ DATABASES = {
         'NAME': 'house_of_today',
         'USER': RDS_MASTER_ID,
         'PASSWORD': RDS_MASTER_PW,
-        'HOST':'house-of-today.cnuxbldx8kex.ap-northeast-2.rds.amazonaws.com',
-        'POST':'5432',
+        'HOST': 'house-of-today.cnuxbldx8kex.ap-northeast-2.rds.amazonaws.com',
+        'POST': '5432',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -123,7 +119,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -137,7 +132,6 @@ USE_L10N = True
 
 USE_TZ = False
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 AWS_ACCESS_KEY_ID = ADMIN_AWS_ACCESS_KEY_ID
@@ -145,7 +139,7 @@ AWS_SECRET_ACCESS_KEY = ADMIN_AWS_SECRET_ACCESS_KEY
 
 AWS_REGION = 'ap-northeast-2'
 AWS_STORAGE_BUCKET_NAME = 'static.house-of-today.jinukk.me'
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.%s.amazonaws.com' % (AWS_STORAGE_BUCKET_NAME,AWS_REGION)
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.%s.amazonaws.com' % (AWS_STORAGE_BUCKET_NAME, AWS_REGION)
 # AWS_S3_CUSTOM_DOMAIN = AWS_STORAGE_BUCKET_NAME
 AWS_S3_SECURE_URLS = False
 
@@ -155,7 +149,7 @@ AWS_S3_FILE_OVERWRITE = False
 
 # 브라우저가 해당 파일에 접속 했을 때 나타나는 파라미터 값
 AWS_S3_OBJECT_PARAMETERS = {
-'CacheControl': 'max-age=86400',
+    'CacheControl': 'max-age=86400',
 }
 
 # 지금올리는 파일의 권한을 지정해줌
@@ -190,35 +184,35 @@ DEBUG_TOOLBAR_PANELS = [
 AUTH_USER_MODEL = 'accounts.User'
 
 AUTHENTICATION_BACKENDS = [
-   'accounts.backends.CustomUserBackend',
+    'accounts.backends.CustomUserBackend',
 ]
 
 REST_FRAMEWORK = {
-   'DEFAULT_PERMISSION_CLASSES': (
-       'rest_framework.permissions.IsAuthenticated',
-   ),
-   'DEFAULT_AUTHENTICATION_CLASSES': (
-       'rest_framework.authentication.TokenAuthentication',
-   ),
-   # 'DEFAULT_FILTER_BACKENDS': (
-   #     'django_filters.rest_framework.DjangoFilterBackend',
-   #     'rest_framework.filters.SearchFilter'
-   # )
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    # 'DEFAULT_FILTER_BACKENDS': (
+    #     'django_filters.rest_framework.DjangoFilterBackend',
+    #     'rest_framework.filters.SearchFilter'
+    # )
 }
 
 SWAGGER_SETTINGS = {
-   'SECURITY_DEFINITIONS': {
-       "api_key": {
-           "type": "apiKey",
-           "name": "Authorization",
-           "in": "header"
-       }
-   }
+    'SECURITY_DEFINITIONS': {
+        "api_key": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
-IAMPORT_SHOP_ID = ADMIN_IAMPORT_SHOP_ID# 가맹점 식별코드
-IAMPORT_API_KEY = ADMIN_IAMPORT_API_KEY # REST API 키
-IAMPORT_API_SECRET = ADMIN_IAMPORT_API_SECRET # REST API SECRET
+IAMPORT_SHOP_ID = ADMIN_IAMPORT_SHOP_ID  # 가맹점 식별코드
+IAMPORT_API_KEY = ADMIN_IAMPORT_API_KEY  # REST API 키
+IAMPORT_API_SECRET = ADMIN_IAMPORT_API_SECRET  # REST API SECRET
