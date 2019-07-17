@@ -78,7 +78,7 @@ class ProductThumnail(models.Model):
 
     def __str__(self):
         # 객체의 이름 - 썸네일 이미지의 url 주소
-        return self.pd_image
+        return self.image
 
     class Meta:
         ordering = ['id']
@@ -92,7 +92,7 @@ class ProductDetailImage(models.Model):
 
     def __str__(self):
         # 객체의 이름 - 상품 정보 이미지의 url 주소
-        return self.pd_detail_image
+        return self.image
 
     class Meta:
         ordering = ['id']

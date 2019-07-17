@@ -43,5 +43,6 @@ FinalProject - House of Today API
     - feat: Add the Serializers API - category, product, product_thumnail, product_detail_image with 'list' and '\<int:pk\>'
     - fix: Products model all renewal - name, field
     - feat: Add the Serializers API - product_option with 'list' and '\<int:pk\>'
+    - fix: Products image model \_\_str\_\_ return value
  
     
