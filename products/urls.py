@@ -14,4 +14,6 @@ urlpatterns = [
     path('detail_image/list/', DetailImageListView.as_view()),
     path('detail_image/<int:pk>/', DetailImageDetailView.as_view()),
 
+    path('option/list/', ProductOptionListView.as_view()),
+    path('option/<int:pk>/', ProductOptionDetailView.as_view()),
 ]
