@@ -1,14 +1,14 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render, redirect
 
-from products.models import Products
+from products.models import Product
 from .models import Order
 from .forms import PayForm
 
 
 @login_required
 def order_new(request, item_id): # 특정 아이템 하나만 지정
-    item = get_object_or_404(Products, pk=item_id) # 아이템 획득
+    item = get_object_or_404(Product, pk=item_id) # 아이템 획득
     order = Order.objects.create(user=request.user, item=item, name=item.name, price=item.price)
     return redirect('shop:order_pay', item_id, str(order.merchant_uid))
 
