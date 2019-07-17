@@ -61,3 +61,18 @@ class DetailImageDetailView(generics.RetrieveAPIView):
     queryset = ProductDetailImage.objects.all()
     serializer_class = DetailImageSerializer
     permission_classes = (AllowAny,)
+
+
+class ProductOptionListView(generics.ListAPIView):
+    renderer_classes = [JSONRenderer]
+    queryset = ProductOption.objects.all()
+    serializer_class = ProductOptionSerializer
+    permission_classes = (AllowAny,)
+
+
+class ProductOptionDetailView(generics.RetrieveAPIView):
+    renderer_classes = [JSONRenderer]
+    queryset = ProductOption.objects.all()
+    serializer_class = ProductOptionSerializer
+    permission_classes = (AllowAny,)
+

@@ -14,9 +14,16 @@ class DetailImageSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class ProductOptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductOption
+        fields = '__all__'
+
+
 class ProductSerializer(serializers.ModelSerializer):
     thumnail_images = ThumnailImageSerializer(source='product_thumnail', many=True)
     detail_images = DetailImageSerializer(source='product_detail_images', many=True)
+    product_option = ProductOptionSerializer(source='product_options', many=True)
 
     class Meta:
         model = Product
@@ -29,3 +36,8 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = '__all__'
+
+
+
+
+
