@@ -37,4 +37,10 @@ FinalProject - House of Today API
     - feat: product_crawling.py and add gitignore
     - feat: pip install bs4
     - feat: pip install ipython and add Product_crawling.ipynb
+
+- 19.07.17
+    - feat: Add the Payments app
+    - feat: Add the Serializers API - category, product, product_thumnail, product_detail_image with 'list' and '<int:pk>'
+ 
+ 
     
