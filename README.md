@@ -40,7 +40,8 @@ FinalProject - House of Today API
 
 - 19.07.17
     - feat: Add the Payments app
-    - feat: Add the Serializers API - category, product, product_thumnail, product_detail_image with 'list' and '<int:pk>'
+    - feat: Add the Serializers API - category, product, product_thumnail, product_detail_image with 'list' and '\<int:pk\>'
+    - fix: Products model all renewal - name, field
  
  
     

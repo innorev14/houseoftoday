@@ -4,7 +4,7 @@ from django.conf import settings
 from django.db import models
 from django.http import Http404
 
-from products.models import Products
+from products.models import Product
 
 from jsonfield import JSONField
 from uuid import uuid4
@@ -28,7 +28,7 @@ def timestamp_to_datetime(timestamp):
 
 class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    item = models.ForeignKey(Products, on_delete=models.CASCADE)
+    item = models.ForeignKey(Product, on_delete=models.CASCADE)
     merchant_uid = models.UUIDField(default=uuid4, editable=False)  # 결제에 대한 쇼핑몰측의 유니크한 ID, 누가 수정할 수 없도록 editable=False
     imp_uid = models.CharField(max_length=100, blank=True)  # 결제상태가paid되면 iamport측에서 전달해주는 id, 처음값은 없을 수 있기에 blank=True
     name = models.CharField(max_length=100, verbose_name='상품명')
