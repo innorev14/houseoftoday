@@ -34,10 +34,8 @@ class ProductOptionAdmin(admin.ModelAdmin):
 
 
 class ReviewAdmin(admin.ModelAdmin):
-    fields = ['user', 'product', 'score_durability', 'score_price', 'score_design', 'score_delivery', 'image',
-              'comment', 'helpful']
-    list_display = ['id', 'user', 'product', 'score_durability', 'score_price', 'score_design', 'score_delivery',
-                    'image', 'comment', 'helpful', 'created']
+    fields = ['user', 'product', 'star_score', 'image', 'comment']
+    list_display = ['id', 'user', 'product', 'star_score', 'image', 'comment', 'created']
 
 
 class PDQnAAdmin(admin.ModelAdmin):
@@ -51,5 +49,5 @@ admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductThumnail, ProductThumnailAdmin)
 admin.site.register(ProductDetailImage, ProductDetailImageAdmin)
 admin.site.register(ProductOption, ProductOptionAdmin)
-admin.site.register(Review)
+admin.site.register(Review, ReviewAdmin)
 admin.site.register(PDQnA, PDQnAAdmin)

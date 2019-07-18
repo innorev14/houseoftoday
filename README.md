@@ -44,9 +44,11 @@ FinalProject - House of Today API
     - fix: Products model all renewal - name, field
     - feat: Add the Serializers API - product_option with 'list' and '\<int:pk\>'
     - fix: Products image model \_\_str\_\_ return value
+    
+- 19.07.18
     - fix: Products model - Review // TextField -> ImageField
     - feat: Add the Products model - Review - 'star_score' DecimalField
     - fix: Change the Products model - Review - 'star_score' DecimalField -> FloatField
-    - fix: Change the API serializers.py - devide the \[ProductDetailSerializer, ProductSerializer\], \[CategorySerializer, CategoryDetailSerializer\] and remove url path the \[thumnail/list/ and \<int:pk\>, detail_image/list/ and \<int:pk\>, option/list/ and \<int:pk\> \] 
-    
+    - fix: Change the API serializers.py - devide the \[ProductDetailSerializer, ProductSerializer\], \[CategorySerializer, CategoryDetailSerializer\] and remove url path the \[thumnail/list/ and \<int:pk\>, detail_image/list/ and \<int:pk\>, option/list/ and \<int:pk\> \]
+    - fix: Update ReviewAdmin field and add ReviewAdmin
     
