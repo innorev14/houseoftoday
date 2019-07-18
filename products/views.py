@@ -17,7 +17,7 @@ class ProductListView(generics.ListAPIView):
 class ProductDetailView(generics.RetrieveAPIView):
     renderer_classes = [JSONRenderer]
     queryset = Product.objects.all()
-    serializer_class = ProductSerializer
+    serializer_class = ProductDetailSerializer
     permission_classes = (AllowAny,)
 
 
@@ -31,7 +31,7 @@ class CategoryListView(generics.ListAPIView):
 class CategoryDetailView(generics.RetrieveAPIView):
     renderer_classes = [JSONRenderer]
     queryset = Category.objects.all()
-    serializer_class = CategorySerializer
+    serializer_class = CategoryDetailSerializer
     permission_classes = (AllowAny,)
 
 

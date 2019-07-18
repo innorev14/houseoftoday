@@ -1,7 +1,7 @@
 from django.db import models
 
 from accounts.models import User
-
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Category(models.Model):
     # 카테고리 이름
@@ -122,7 +122,7 @@ class Review(models.Model):
     # 리뷰가 속한 상품
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
     # 별점
-    star_score = models.DecimalField(max_digits=5, decimal_places=1)
+    star_score = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(5)])
     # 리뷰 이미지 - url 주소 저장
     image = models.ImageField(upload_to='store/review/%Y/%m/%d', blank=True, null=True)
     # 리뷰 내용
