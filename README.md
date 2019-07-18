@@ -44,5 +44,6 @@ FinalProject - House of Today API
     - fix: Products model all renewal - name, field
     - feat: Add the Serializers API - product_option with 'list' and '\<int:pk\>'
     - fix: Products image model \_\_str\_\_ return value
+    - fix: Products model - Review // TextField -> ImageField
  
     
