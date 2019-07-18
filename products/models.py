@@ -122,7 +122,7 @@ class Review(models.Model):
     # 리뷰가 속한 상품
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
     # 별점
-    star_score = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(5)])
+    star_score = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(5)], default=0)
     # 리뷰 이미지 - url 주소 저장
     image = models.ImageField(upload_to='store/review/%Y/%m/%d', blank=True, null=True)
     # 리뷰 내용
