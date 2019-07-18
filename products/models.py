@@ -110,7 +110,7 @@ class ProductOption(models.Model):
 
     def __str__(self):
         # 객체의 이름 - 상품 옵션의 이름
-        return self.option_name
+        return self.name
 
     class Meta:
         ordering = ['id']
@@ -121,20 +121,14 @@ class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')
     # 리뷰가 속한 상품
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
-    # 내구성 점수
-    score_durability = models.PositiveIntegerField(default=0)
-    # 가격 점수
-    score_price = models.PositiveIntegerField(default=0)
-    # 디자인 점수
-    score_design = models.PositiveIntegerField(default=0)
-    # 배송 점수
-    score_delivery = models.PositiveIntegerField(default=0)
+    # 별점
+    star_score = models.DecimalField(max_digits=5, decimal_places=1)
     # 리뷰 이미지 - url 주소 저장
-    image = models.TextField()
+    image = models.ImageField(upload_to='store/review/%Y/%m/%d', blank=True, null=True)
     # 리뷰 내용
     comment = models.TextField()
     # '도움이 돼요' 버튼에 대한 필드
-    helpful = models.ManyToManyField(User, related_name='helpful_reviews', blank=True)
+    helpful = models.ManyToManyField(User, related_name='helpful_reviews', blank=True, null=True)
     # 생성 일자
     created = models.DateField(auto_now_add=True)
 
