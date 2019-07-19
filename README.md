@@ -57,6 +57,7 @@ FinalProject - House of Today API
     - feat: Add(Change) the API serializers.py - ProductSerializer // Add the filtering 'thumnail_images' Attribute: Many -> Just One
     - feat: pip install drf_yasg and add API document description
     - feat: Add(Change) the API serializers.py - ProductSerializer // Add the 'review' field
+    - test: git merge test
     
     
       
