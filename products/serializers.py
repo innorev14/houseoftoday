@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 
@@ -28,6 +27,12 @@ class ReviewSerializer(serializers.ModelSerializer):
         model = Review
         fields = '__all__'
 
+# Category-Product에 뿌려줄 리뷰점수(star_score) field만 있으면 됨.
+class ReviewScoreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = ('star_score',)
+
 
 class PDQnASerializer(serializers.ModelSerializer):
     class Meta:
@@ -37,15 +42,14 @@ class PDQnASerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    # 전체 목록 가져오기.
-    # thumnail_images = ThumnailImageSerializer(source='product_thumnail', many=True)
-
     # 읽기 전용으로, serializer 클래스에서 메서드를 호출하여 값을 가져옴.
     thumnail_images = SerializerMethodField()
+    # 상품 리뷰 별점에 관한 필드 추가.
+    review = ReviewScoreSerializer(source='reviews', many=True)
 
     class Meta:
         model = Product
-        fields = ('id','name','price', 'thumnail_images')
+        fields = ('id', 'brand_name', 'name', 'price', 'thumnail_images', 'review')
 
     # 함수명은 get_[related_name field]로써,
     # def get_[related_name](self, [models.py에서 해당 class 내 related_name의 변수명]): 을 가져오면 됨.
@@ -57,6 +61,7 @@ class ProductSerializer(serializers.ModelSerializer):
         serializer = ThumnailImageSerializer(instance=thumnail_images, many=True)
         # filtering된 내용의 data를 반환함.
         return serializer.data
+
 
 
 # Product Detail에 관한 정보
