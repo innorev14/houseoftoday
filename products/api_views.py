@@ -32,13 +32,15 @@ class CategoryDetailView(generics.RetrieveAPIView):
 
             - products : 카테고리에 속한 상품
                 - id : 상품의 고유 ID
+                - brand_name : 상품의 브랜드 이름
                 - name : 상품 이름
                 - price : 상품 가격
                 - thumnail_images : 상품 썸네일 이미지
                     - id : 썸네일 이미지의 고유 ID
                     - image : 썸네일 이미지(URL Address)
                     - product : 썸네일 이미지가 속한 상품의 고유 ID
-
+                - review : 상품 리뷰
+                    - star_score : 리뷰 별점
             - name : 카테고리 이름
             - image : 카테고리 이미지(URL Address)
     """
@@ -54,13 +56,15 @@ class ProductListView(generics.ListAPIView):
         ---
         # 내용
             - id : 상품의 고유 ID
+            - brand_name : 상품의 브랜드 이름
             - name : 상품 이름
             - price : 상품 가격
             - thumnail_images : 상품 썸네일 이미지
                 - id : 썸네일 이미지의 고유 ID
                 - image : 썸네일 이미지(URL Address)
                 - product : 썸네일 이미지가 속한 상품의 고유 ID
-
+            - review : 상품 리뷰
+                - star_score : 리뷰 별점
     """
     renderer_classes = [JSONRenderer]
     queryset = Product.objects.all()

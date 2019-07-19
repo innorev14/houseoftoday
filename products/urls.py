@@ -8,6 +8,10 @@ urlpatterns = [
     path('product/list/', ProductListView.as_view()),
     path('product/<int:pk>/', ProductDetailView.as_view()),
 
+
+
+
+
     # path('thumnail/list/', ThumnailListView.as_view()),
     # path('thumnail/<int:pk>/', ThumnailDetailView.as_view()),
     #
