@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'django_extensions',
     'rest_framework',
+    'drf_yasg',
     'rest_framework_swagger',
     'rest_framework.authtoken',
     'corsheaders',
