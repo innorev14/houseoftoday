@@ -1,4 +1,7 @@
+from django.contrib.auth.models import User
 from rest_framework import serializers
+from rest_framework.fields import SerializerMethodField
+
 from .models import *
 
 
@@ -32,21 +35,28 @@ class PDQnASerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+
 class ProductSerializer(serializers.ModelSerializer):
-    # queryset test 예정.
-    # queryset = product.product_thumnail.all()[-1:].data
-    # thumnail_images = ThumnailImageSerializer(queryset, many=True)
-    # thumnail_images = serializers.SerializerMethodField()
+    # 전체 목록 가져오기.
+    # thumnail_images = ThumnailImageSerializer(source='product_thumnail', many=True)
 
-    thumnail_images = ThumnailImageSerializer(source='product_thumnail', many=True)
-
-    # def get_thumnail_oneimage(self, product):
-    #     queryset = product.product_thumnail.all()[-1:]
-    #     return ThumnailImageSerializer(queryset, many=True).data
+    # 읽기 전용으로, serializer 클래스에서 메서드를 호출하여 값을 가져옴.
+    thumnail_images = SerializerMethodField()
 
     class Meta:
         model = Product
         fields = ('id','name','price', 'thumnail_images')
+
+    # 함수명은 get_[related_name field]로써,
+    # def get_[related_name](self, [models.py에서 해당 class 내 related_name의 변수명]): 을 가져오면 됨.
+    def get_thumnail_images(self, product):
+        # filter는 object를 이용해 가져옴으로써, slice(잘라서)를 통해 원하는 내용을 가져올 수 있음.
+        # Queryset처럼 일반적으로 해당 부분만 불러오도록 뒤에[0] 등을 사용하면 Err 발생함.
+        thumnail_images = ProductThumnail.objects.filter(product=product)[0:1]
+        # 인스턴스에 해당 내용을 넣어 실제 filtering을 실시함.
+        serializer = ThumnailImageSerializer(instance=thumnail_images, many=True)
+        # filtering된 내용의 data를 반환함.
+        return serializer.data
 
 
 # Product Detail에 관한 정보
