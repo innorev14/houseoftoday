@@ -53,4 +53,10 @@ FinalProject - House of Today API
     - fix: Update ReviewAdmin field and add ReviewAdmin
    
 - 19.07.19
-    - feat: Add(Change) the API serializers.py - PDQnASerializer, ReviewSerializer 
+    - feat: Add(Change) the API serializers.py - PDQnASerializer, ReviewSerializer
+    - feat: Add(Change) the API serializers.py - ProductSerializer // Add the filtering 'thumnail_images' Attribute: Many -> Just One
+    - feat: pip install drf_yasg and add API document description
+    
+    
+    
+      
