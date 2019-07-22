@@ -60,7 +60,7 @@ FinalProject - House of Today API
     
 - 19.07.22    
     - feat: Add the StoreHome API(combine the multiple serializer) in api_views.py-StoreHomeView
-    
+    - fix: Add the admin.py-ProductAdmin-'discount_rate' field, settings.py-'rest_framework_swagger' annotate use.
     
     
     

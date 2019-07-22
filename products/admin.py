@@ -11,11 +11,11 @@ class ProductAdmin(admin.ModelAdmin):
     fields = ['name', 'price', 'brand_name', 'category', 'detail_name', 'detail_color', 'detail_size',
               'detail_component', 'detail_auth', 'detail_cost', 'detail_standard', 'detail_mfc', 'detail_mis',
               'detail_as', 'return_fee', 'exchange_fee', 'return_address', 'deliver', 'deliver_fee', 'deliver_no_go',
-              'deliver_fee_diff']
+              'deliver_fee_diff','discount_rate']
     list_display = ['id', 'name', 'price', 'brand_name', 'category', 'detail_name', 'detail_color', 'detail_size',
                     'detail_component', 'detail_auth', 'detail_cost', 'detail_standard', 'detail_mfc', 'detail_mis',
                     'detail_as', 'return_fee', 'exchange_fee', 'return_address', 'deliver', 'deliver_fee',
-                    'deliver_no_go', 'deliver_fee_diff', 'created']
+                    'deliver_no_go', 'deliver_fee_diff', 'created','discount_rate']
 
 
 class ProductThumnailAdmin(admin.ModelAdmin):
