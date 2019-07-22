@@ -233,17 +233,77 @@ class StoreHomeView(generics.ListAPIView):
 
 
 class RankingView(generics.ListAPIView):
-    pass
+    renderer_classes = [JSONRenderer]
 
+    serializer_class_product = ProductSerializer
+    # 각 Category별 제품을 분리시켜 받아오기 위해 사용.
+    serializer_class_category_in_product = ProductSerializer
+    # serializer_class_category_in_product = ProductSerializer(source='category', many=True)
 
+    permission_classes = (AllowAny,)
 
+    # 카테고리별 best100
+    def get_queryset_product(self):
+        return Product.objects.all()[0:100]
 
+    # 조명&홈데코(category 명칭: 홈데코&조명)
+    def get_queryset_category_in_product4(self):
+        return Product.objects.filter(category__id='4')[0:10]
 
+    # 생활용품(category 명칭: 수납/생활)
+    def get_queryset_category_in_product6(self):
+        return Product.objects.filter(category__id='6')[0:10]
 
+    # 패브릭
+    def get_queryset_category_in_product3(self):
+        return Product.objects.filter(category__id='3')[0:10]
 
+    # 주방용품(category 명칭: 주방)
+    def get_queryset_category_in_product7(self):
+        return Product.objects.filter(category__id='7')[0:10]
 
+    # 가전제품 5
+    def get_queryset_category_in_product5(self):
+        return Product.objects.filter(category__id='5')[0:10]
 
+    # 반려동물
+    def get_queryset_category_in_product10(self):
+        return Product.objects.filter(category__id='10')[0:10]
 
+    # 가구
+    def get_queryset_category_in_product2(self):
+        return Product.objects.filter(category__id='2')[0:10]
+
+    def list(self, request, *args, **kwargs):
+        best100 = self.serializer_class_product(self.get_queryset_product(), many=True)
+        light_homedeco = self.serializer_class_category_in_product(self.get_queryset_category_in_product4(), many=True)
+        daily_supplies = self.serializer_class_category_in_product(self.get_queryset_category_in_product6(), many=True)
+        fabric = self.serializer_class_category_in_product(self.get_queryset_category_in_product3(), many=True)
+        kitchenware = self.serializer_class_category_in_product(self.get_queryset_category_in_product7(), many=True)
+        home_appliances = self.serializer_class_category_in_product(self.get_queryset_category_in_product5(), many=True)
+        companion_animal = self.serializer_class_category_in_product(self.get_queryset_category_in_product10(), many=True)
+        furniture = self.serializer_class_category_in_product(self.get_queryset_category_in_product2(), many=True)
+
+        return Response({
+            'best100':best100.data,
+            'light_homedeco':light_homedeco.data,
+            'daily_supplies':daily_supplies.data,
+            'fabric':fabric.data,
+            'kitchenware':kitchenware.data,
+            'home_appliances':home_appliances.data,
+            'companion_animal':companion_animal.data,
+            'furniture':furniture.data,
+        })
+        # 카테고리별 best100 : 'best100'
+        # 조명&홈데코 4 : 'light_homedeco'
+        # 생활용품 6 : 'daily_supplies'
+        # 패브릭 3 : 'fabric'
+        # 주방용품 7 : 'kitchenware'
+        # 가전제품 5 : 'home_appliances'
+        # 반려 동물 10 : 'companion_animal'
+        # 가구 2 : 'furniture'
+
+        # products = ProductSerializer(source='category', many=True)
 
 
 

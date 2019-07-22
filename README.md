@@ -60,8 +60,9 @@ FinalProject - House of Today API
     - test: git merge test
     
 - 19.07.22    
-    - feat: Add the StoreHome API(combine the multiple serializer) in api_views.py-StoreHomeView
+    - feat: Add the StoreHome API(combine the multiple serializer in views.py) in api_views.py-StoreHomeView
     - fix: Add the admin.py-ProductAdmin-'discount_rate' field, settings.py-'rest_framework_swagger' annotate use.
+    - feat: Add the RankingView API(combine the multiple serializer in views.py) in api_views.py-RankingView
     
     
     
