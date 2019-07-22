@@ -201,6 +201,42 @@ class ProductOptionDetailView(generics.RetrieveAPIView):
 # google 검색어 : how to DRF serializer combine
 # 참조 : https://stackoverflow.com/questions/45414928/combining-two-different-serializers-into-one-view-returning-named-json-arrays
 class StoreHomeView(generics.ListAPIView):
+    """
+        스토어 홈 관련 정보를 모두 불러옵니다.
+
+        ---
+        # 내용
+            - todaydeal : 오늘의 딜
+                - id : 상품의 고유 ID
+                - brand_name : 상품의 브랜드 이름
+                - name : 상품 이름
+                - discount_rate : 할인율
+                - price : 상품 가격
+                - thumnail_images : 상품 썸네일 이미지
+                    - id : 썸네일 이미지의 고유 ID
+                    - image : 썸네일 이미지(URL Address)
+                - product : 썸네일 이미지가 속한 상품의 고유 ID
+                - review : 상품 리뷰
+                    - star_score : 리뷰 별점
+
+            - categories: 카테고리
+                - id : 카테고리의 고유 ID
+                - name : 카테고리 이름
+                - image : 카테고리 이미지(URL Address)
+
+            - poular_products : 인기 상품
+                - id : 상품의 고유 ID
+                    - brand_name : 상품의 브랜드 이름
+                    - name : 상품 이름
+                    - discount_rate : 할인율
+                    - price : 상품 가격
+                    - thumnail_images : 상품 썸네일 이미지
+                        - id : 썸네일 이미지의 고유 ID
+                        - image : 썸네일 이미지(URL Address)
+                    - product : 썸네일 이미지가 속한 상품의 고유 ID
+                    - review : 상품 리뷰
+                        - star_score : 리뷰 별점
+    """
     renderer_classes = [JSONRenderer]
     serializer_class_product = ProductSerializer
     serializer_class_category = CategorySerializer
@@ -215,7 +251,8 @@ class StoreHomeView(generics.ListAPIView):
     def get_queryset_category(self):
         return Category.objects.all()
 
-    # 이거 할려면 먼저 리뷰점수에 관한 평점이 나와야 한다. 계산해야됨...
+    # 이거 할려면 먼저 리뷰점수에 관한 평점이 나와야 한다.
+    # 계산해야 한다.
     def get_queryset_popularproducts(self):
         return Product.objects.all()
         # return Product.objects.order_by('star_score')
@@ -233,6 +270,115 @@ class StoreHomeView(generics.ListAPIView):
 
 
 class RankingView(generics.ListAPIView):
+    """
+        랭킹 관련 정보를 모두 불러옵니다.
+
+        ---
+        # 내용
+            - best100 : 카테고리별 BEST 100 정보(상품 100개)
+                - id : 상품의 고유 ID
+                - brand_name : 상품의 브랜드 이름
+                - name : 상품 이름
+                - discount_rate : 할인율
+                - price : 상품 가격
+                - thumnail_images : 상품 썸네일 이미지
+                    - id : 썸네일 이미지의 고유 ID
+                    - image : 썸네일 이미지(URL Address)
+                - product : 썸네일 이미지가 속한 상품의 고유 ID
+                - review : 상품 리뷰
+                    - star_score : 리뷰 별점
+
+            - light_homedeco : 조명&홈데코 BEST 정보(상품 10개)
+                - id : 상품의 고유 ID
+                - brand_name : 상품의 브랜드 이름
+                - name : 상품 이름
+                - discount_rate : 할인율
+                - price : 상품 가격
+                - thumnail_images : 상품 썸네일 이미지
+                    - id : 썸네일 이미지의 고유 ID
+                    - image : 썸네일 이미지(URL Address)
+                - product : 썸네일 이미지가 속한 상품의 고유 ID
+                - review : 상품 리뷰
+                    - star_score : 리뷰 별점
+
+            - daily_supplies : 생활용품 BEST 정보(상품 10개)
+                - id : 상품의 고유 ID
+                - brand_name : 상품의 브랜드 이름
+                - name : 상품 이름
+                - discount_rate : 할인율
+                - price : 상품 가격
+                - thumnail_images : 상품 썸네일 이미지
+                    - id : 썸네일 이미지의 고유 ID
+                    - image : 썸네일 이미지(URL Address)
+                - product : 썸네일 이미지가 속한 상품의 고유 ID
+                - review : 상품 리뷰
+                    - star_score : 리뷰 별점
+
+            - fabric : 패브릭 BEST 정보(상품 10개)
+                - id : 상품의 고유 ID
+                - brand_name : 상품의 브랜드 이름
+                - name : 상품 이름
+                - discount_rate : 할인율
+                - price : 상품 가격
+                - thumnail_images : 상품 썸네일 이미지
+                    - id : 썸네일 이미지의 고유 ID
+                    - image : 썸네일 이미지(URL Address)
+                - product : 썸네일 이미지가 속한 상품의 고유 ID
+                - review : 상품 리뷰
+                    - star_score : 리뷰 별점
+
+            - kitchenware : 주방용품 BEST 정보(상품 10개)
+                - id : 상품의 고유 ID
+                - brand_name : 상품의 브랜드 이름
+                - name : 상품 이름
+                - discount_rate : 할인율
+                - price : 상품 가격
+                - thumnail_images : 상품 썸네일 이미지
+                    - id : 썸네일 이미지의 고유 ID
+                    - image : 썸네일 이미지(URL Address)
+                - product : 썸네일 이미지가 속한 상품의 고유 ID
+                - review : 상품 리뷰
+                    - star_score : 리뷰 별점
+
+            - home_appliances : 가전제품 BEST 정보(상품 10개)
+                - id : 상품의 고유 ID
+                - brand_name : 상품의 브랜드 이름
+                - name : 상품 이름
+                - discount_rate : 할인율
+                - price : 상품 가격
+                - thumnail_images : 상품 썸네일 이미지
+                    - id : 썸네일 이미지의 고유 ID
+                    - image : 썸네일 이미지(URL Address)
+                - product : 썸네일 이미지가 속한 상품의 고유 ID
+                - review : 상품 리뷰
+                    - star_score : 리뷰 별점
+
+            - companion_animal : 반려동물 BEST 정보(상품 10개)
+                - id : 상품의 고유 ID
+                - brand_name : 상품의 브랜드 이름
+                - name : 상품 이름
+                - discount_rate : 할인율
+                - price : 상품 가격
+                - thumnail_images : 상품 썸네일 이미지
+                    - id : 썸네일 이미지의 고유 ID
+                    - image : 썸네일 이미지(URL Address)
+                - product : 썸네일 이미지가 속한 상품의 고유 ID
+                - review : 상품 리뷰
+                    - star_score : 리뷰 별점
+
+            - furniture : 가구 BEST 정보(상품 10개)
+                - id : 상품의 고유 ID
+                - brand_name : 상품의 브랜드 이름
+                - name : 상품 이름
+                - discount_rate : 할인율
+                - price : 상품 가격
+                - thumnail_images : 상품 썸네일 이미지
+                    - id : 썸네일 이미지의 고유 ID
+                    - image : 썸네일 이미지(URL Address)
+                - product : 썸네일 이미지가 속한 상품의 고유 ID
+                - review : 상품 리뷰
+                    - star_score : 리뷰 별점
+    """
     renderer_classes = [JSONRenderer]
 
     serializer_class_product = ProductSerializer
@@ -262,7 +408,7 @@ class RankingView(generics.ListAPIView):
     def get_queryset_category_in_product7(self):
         return Product.objects.filter(category__id='7')[0:10]
 
-    # 가전제품 5
+    # 가전제품
     def get_queryset_category_in_product5(self):
         return Product.objects.filter(category__id='5')[0:10]
 

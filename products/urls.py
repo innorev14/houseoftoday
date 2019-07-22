@@ -9,7 +9,7 @@ urlpatterns = [
     path('category/<int:pk>/', CategoryDetailView.as_view()),
 
     path('storehome/', StoreHomeView.as_view()),
-    path('ranks/', RankingView.as_view()),
+    path('ranking/', RankingView.as_view()),
 
     # path('thumnail/list/', ThumnailListView.as_view()),
     # path('thumnail/<int:pk>/', ThumnailDetailView.as_view()),
