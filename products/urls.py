@@ -8,9 +8,8 @@ urlpatterns = [
     path('category/list/', CategoryListView.as_view()),
     path('category/<int:pk>/', CategoryDetailView.as_view()),
 
-    # path('', StoreHomeView.as_view()),
-    path('', StoreHomeView.as_view()),
-
+    path('storehome/', StoreHomeView.as_view()),
+    path('ranks/', RankingView.as_view()),
 
     # path('thumnail/list/', ThumnailListView.as_view()),
     # path('thumnail/<int:pk>/', ThumnailDetailView.as_view()),
@@ -21,6 +20,9 @@ urlpatterns = [
     # path('option/list/', ProductOptionListView.as_view()),
     # path('option/<int:pk>/', ProductOptionDetailView.as_view()),
 ]
+
+
+
 
 ################ Comment Configuration ###################
 
