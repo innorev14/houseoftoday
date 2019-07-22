@@ -53,7 +53,7 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         # fields = ('id', 'brand_name', 'name', 'price', 'thumnail_images', 'star_score',)
-        fields = ('id', 'brand_name', 'name', 'price', 'thumnail_images', 'review')
+        fields = ('id', 'brand_name', 'name', 'discount_rate', 'price', 'thumnail_images', 'review')
 
     # 함수명은 get_[related_name field]로써,
     # def get_[related_name](self, [models.py에서 해당 class 내 related_name의 변수명]): 을 가져오면 됨.
