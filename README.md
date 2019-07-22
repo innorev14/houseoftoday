@@ -58,5 +58,12 @@ FinalProject - House of Today API
     - feat: pip install drf_yasg and add API document description
     - feat: Add(Change) the API serializers.py - ProductSerializer // Add the 'review' field
     
+- 19.07.22    
+    - feat: Add the StoreHome API(combine the multiple serializer) in api_views.py-StoreHomeView
     
-      
+    
+    
+    
+    
+    
+    
