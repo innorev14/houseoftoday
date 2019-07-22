@@ -232,6 +232,9 @@ class StoreHomeView(generics.ListAPIView):
         })
 
 
+class RankingView(generics.ListAPIView):
+    pass
+
 
 
 
