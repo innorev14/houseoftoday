@@ -59,5 +59,12 @@ FinalProject - House of Today API
     - feat: Add(Change) the API serializers.py - ProductSerializer // Add the 'review' field
     - test: git merge test
     
+- 19.07.22    
+    - feat: Add the StoreHome API(combine the multiple serializer) in api_views.py-StoreHomeView
     
-      
+    
+    
+    
+    
+    
+    

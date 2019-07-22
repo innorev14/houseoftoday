@@ -61,6 +61,8 @@ class Product(models.Model):
     deliver_fee_diff = models.CharField(max_length=100, default='없음')
     # 생성일자
     created = models.DateField(auto_now_add=True)
+    # 할인율
+    discount_rate = models.CharField(max_length=3, blank=True, null=True)
 
     def __str__(self):
         # 객체의 이름 - 상품 이름

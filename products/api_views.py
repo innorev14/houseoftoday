@@ -1,5 +1,7 @@
 from django.shortcuts import render
+# from requests import Response
 from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
 
 from .serializers import *
 from .models import *
@@ -194,3 +196,51 @@ class ProductOptionDetailView(generics.RetrieveAPIView):
     queryset = ProductOption.objects.all()
     serializer_class = ProductOptionSerializer
     permission_classes = (AllowAny,)
+
+
+# google 검색어 : how to DRF serializer combine
+# 참조 : https://stackoverflow.com/questions/45414928/combining-two-different-serializers-into-one-view-returning-named-json-arrays
+class StoreHomeView(generics.ListAPIView):
+    renderer_classes = [JSONRenderer]
+    serializer_class_product = ProductSerializer
+    serializer_class_category = CategorySerializer
+
+    permission_classes = (AllowAny,)
+
+
+    def get_queryset_product(self):
+        return Product.objects.all()[0:4]
+        # return Product.objects.all()
+
+    def get_queryset_category(self):
+        return Category.objects.all()
+
+    # 이거 할려면 먼저 리뷰점수에 관한 평점이 나와야 한다. 계산해야됨...
+    def get_queryset_popularproducts(self):
+        return Product.objects.all()
+        # return Product.objects.order_by('star_score')
+
+    def list(self, request, *args, **kwargs):
+        todaydeal = self.serializer_class_product(self.get_queryset_product(), many=True)
+        categories = self.serializer_class_category(self.get_queryset_category(), many=True)
+        popular_products = self.serializer_class_product(self.get_queryset_popularproducts(), many=True)
+
+        return Response({
+            'todaydeal':todaydeal.data,
+            'categories':categories.data,
+            'popular_products':popular_products.data
+        })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
