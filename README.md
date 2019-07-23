@@ -72,6 +72,7 @@ FinalProject - House of Today API
     - fix: delete ProductSerializer class // review
     - feat: Update requirements.txt, cron.py // django-crontab==0.7.1
     - feat: Create the models.py - class // HotDealNumber
+    - fix: Update StoreHomeView // add updated_hot_deal_num function and update get_queryset_product function
 
 
     
