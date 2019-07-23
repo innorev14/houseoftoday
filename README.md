@@ -73,7 +73,10 @@ FinalProject - House of Today API
     - feat: Update requirements.txt, cron.py // django-crontab==0.7.1
     - feat: Create the models.py - class // HotDealNumber
     - fix: Update StoreHomeView // add updated_hot_deal_num function and update get_queryset_product function
-    - fix: Update urls: StoreHomeView, ranking // StoreHomeView : Sorting all fields('categories','popular_products') except 'todaydeal', Sorting all fields(8 fields)  
+    - fix: Update urls: StoreHomeView, ranking // StoreHomeView : Sorting all fields('categories','popular_products') except 'todaydeal', Sorting all fields(8 fields)
+
+19.07.24
+    - fix: setting.py - TIME_ZONE : 'UTC' -> 'Asia/Seoul'
 
 
     
