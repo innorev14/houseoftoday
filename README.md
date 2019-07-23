@@ -65,6 +65,8 @@ FinalProject - House of Today API
     - feat: Add the RankingView API(combine the multiple serializer in views.py) in api_views.py-RankingView
     - feat: Add RankingView and StoreHoneView API description
     
+- 19.07.23
+    - fix: Update requirements.txt // django-extensions==2.2.1
     
     
     
