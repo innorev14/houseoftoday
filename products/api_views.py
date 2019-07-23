@@ -52,8 +52,6 @@ class CategoryDetailView(generics.RetrieveAPIView):
                     - id : 썸네일 이미지의 고유 ID
                     - image : 썸네일 이미지(URL Address)
                     - product : 썸네일 이미지가 속한 상품의 고유 ID
-                - review : 상품 리뷰
-                    - star_score : 리뷰 별점
             - name : 카테고리 이름
             - image : 카테고리 이미지(URL Address)
     """
@@ -79,8 +77,6 @@ class ProductListView(generics.ListAPIView):
                 - id : 썸네일 이미지의 고유 ID
                 - image : 썸네일 이미지(URL Address)
                 - product : 썸네일 이미지가 속한 상품의 고유 ID
-            - review : 상품 리뷰
-                - star_score : 리뷰 별점
     """
     renderer_classes = [JSONRenderer]
     queryset = Product.objects.all()
@@ -236,8 +232,6 @@ class StoreHomeView(generics.ListAPIView):
                     - id : 썸네일 이미지의 고유 ID
                     - image : 썸네일 이미지(URL Address)
                 - product : 썸네일 이미지가 속한 상품의 고유 ID
-                - review : 상품 리뷰
-                    - star_score : 리뷰 별점
 
             - categories: 카테고리
                 - id : 카테고리의 고유 ID
@@ -254,8 +248,6 @@ class StoreHomeView(generics.ListAPIView):
                         - id : 썸네일 이미지의 고유 ID
                         - image : 썸네일 이미지(URL Address)
                     - product : 썸네일 이미지가 속한 상품의 고유 ID
-                    - review : 상품 리뷰
-                        - star_score : 리뷰 별점
     """
     renderer_classes = [JSONRenderer]
     serializer_class_product = ProductSerializer
@@ -306,8 +298,6 @@ class RankingView(generics.ListAPIView):
                     - id : 썸네일 이미지의 고유 ID
                     - image : 썸네일 이미지(URL Address)
                 - product : 썸네일 이미지가 속한 상품의 고유 ID
-                - review : 상품 리뷰
-                    - star_score : 리뷰 별점
 
             - light_homedeco : 조명&홈데코 BEST 정보(상품 10개)
                 - id : 상품의 고유 ID
@@ -319,8 +309,6 @@ class RankingView(generics.ListAPIView):
                     - id : 썸네일 이미지의 고유 ID
                     - image : 썸네일 이미지(URL Address)
                 - product : 썸네일 이미지가 속한 상품의 고유 ID
-                - review : 상품 리뷰
-                    - star_score : 리뷰 별점
 
             - daily_supplies : 생활용품 BEST 정보(상품 10개)
                 - id : 상품의 고유 ID
@@ -332,8 +320,6 @@ class RankingView(generics.ListAPIView):
                     - id : 썸네일 이미지의 고유 ID
                     - image : 썸네일 이미지(URL Address)
                 - product : 썸네일 이미지가 속한 상품의 고유 ID
-                - review : 상품 리뷰
-                    - star_score : 리뷰 별점
 
             - fabric : 패브릭 BEST 정보(상품 10개)
                 - id : 상품의 고유 ID
@@ -345,8 +331,6 @@ class RankingView(generics.ListAPIView):
                     - id : 썸네일 이미지의 고유 ID
                     - image : 썸네일 이미지(URL Address)
                 - product : 썸네일 이미지가 속한 상품의 고유 ID
-                - review : 상품 리뷰
-                    - star_score : 리뷰 별점
 
             - kitchenware : 주방용품 BEST 정보(상품 10개)
                 - id : 상품의 고유 ID
@@ -358,8 +342,6 @@ class RankingView(generics.ListAPIView):
                     - id : 썸네일 이미지의 고유 ID
                     - image : 썸네일 이미지(URL Address)
                 - product : 썸네일 이미지가 속한 상품의 고유 ID
-                - review : 상품 리뷰
-                    - star_score : 리뷰 별점
 
             - home_appliances : 가전제품 BEST 정보(상품 10개)
                 - id : 상품의 고유 ID
@@ -371,8 +353,6 @@ class RankingView(generics.ListAPIView):
                     - id : 썸네일 이미지의 고유 ID
                     - image : 썸네일 이미지(URL Address)
                 - product : 썸네일 이미지가 속한 상품의 고유 ID
-                - review : 상품 리뷰
-                    - star_score : 리뷰 별점
 
             - companion_animal : 반려동물 BEST 정보(상품 10개)
                 - id : 상품의 고유 ID
@@ -384,8 +364,6 @@ class RankingView(generics.ListAPIView):
                     - id : 썸네일 이미지의 고유 ID
                     - image : 썸네일 이미지(URL Address)
                 - product : 썸네일 이미지가 속한 상품의 고유 ID
-                - review : 상품 리뷰
-                    - star_score : 리뷰 별점
 
             - furniture : 가구 BEST 정보(상품 10개)
                 - id : 상품의 고유 ID
@@ -397,8 +375,6 @@ class RankingView(generics.ListAPIView):
                     - id : 썸네일 이미지의 고유 ID
                     - image : 썸네일 이미지(URL Address)
                 - product : 썸네일 이미지가 속한 상품의 고유 ID
-                - review : 상품 리뷰
-                    - star_score : 리뷰 별점
     """
     renderer_classes = [JSONRenderer]
 
