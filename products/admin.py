@@ -44,6 +44,11 @@ class PDQnAAdmin(admin.ModelAdmin):
                     'a_created']
 
 
+class HotDealNumberAdmin(admin.ModelAdmin):
+    fields = ['product_rnd_number']
+    list_display = ['id','product_rnd_number','updated']
+
+
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductThumnail, ProductThumnailAdmin)
@@ -51,3 +56,5 @@ admin.site.register(ProductDetailImage, ProductDetailImageAdmin)
 admin.site.register(ProductOption, ProductOptionAdmin)
 admin.site.register(Review, ReviewAdmin)
 admin.site.register(PDQnA, PDQnAAdmin)
+admin.site.register(HotDealNumber, HotDealNumberAdmin)
+
