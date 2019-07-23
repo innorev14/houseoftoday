@@ -284,11 +284,10 @@ class StoreHomeView(generics.ListAPIView):
     def get_queryset_category(self):
         return Category.objects.all()
 
-    # 이거 할려면 먼저 리뷰점수에 관한 평점이 나와야 한다.
-    # 계산해야 한다.
+
     def get_queryset_popularproducts(self):
-        return Product.objects.all()
-        # return Product.objects.order_by('star_score')
+        return Product.objects.all().order_by('-star_avg')
+
 
     def list(self, request, *args, **kwargs):
         todaydeal = self.serializer_class_product(self.get_queryset_product(), many=True)
@@ -409,35 +408,35 @@ class RankingView(generics.ListAPIView):
 
     # 카테고리별 best100
     def get_queryset_product(self):
-        return Product.objects.all()[0:100]
+        return Product.objects.all().order_by('-star_avg')[0:100]
 
     # 조명&홈데코(category 명칭: 홈데코&조명)
     def get_queryset_category_in_product4(self):
-        return Product.objects.filter(category__id='4')[0:10]
+        return Product.objects.filter(category__id='4').order_by('-star_avg')[0:10]
 
     # 생활용품(category 명칭: 수납/생활)
     def get_queryset_category_in_product6(self):
-        return Product.objects.filter(category__id='6')[0:10]
+        return Product.objects.filter(category__id='6').order_by('-star_avg')[0:10]
 
     # 패브릭
     def get_queryset_category_in_product3(self):
-        return Product.objects.filter(category__id='3')[0:10]
+        return Product.objects.filter(category__id='3').order_by('-star_avg')[0:10]
 
     # 주방용품(category 명칭: 주방)
     def get_queryset_category_in_product7(self):
-        return Product.objects.filter(category__id='7')[0:10]
+        return Product.objects.filter(category__id='7').order_by('-star_avg')[0:10]
 
     # 가전제품
     def get_queryset_category_in_product5(self):
-        return Product.objects.filter(category__id='5')[0:10]
+        return Product.objects.filter(category__id='5').order_by('-star_avg')[0:10]
 
     # 반려동물
     def get_queryset_category_in_product10(self):
-        return Product.objects.filter(category__id='10')[0:10]
+        return Product.objects.filter(category__id='10').order_by('-star_avg')[0:10]
 
     # 가구
     def get_queryset_category_in_product2(self):
-        return Product.objects.filter(category__id='2')[0:10]
+        return Product.objects.filter(category__id='2').order_by('-star_avg')[0:10]
 
     def list(self, request, *args, **kwargs):
         best100 = self.serializer_class_product(self.get_queryset_product(), many=True)
