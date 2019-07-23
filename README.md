@@ -71,6 +71,7 @@ FinalProject - House of Today API
     - feat: Add the calculate_review signal class and Update API description
     - fix: delete ProductSerializer class // review
     - feat: Update requirements.txt, cron.py // django-crontab==0.7.1
+    - feat: Create the models.py - class // HotDealNumber
 
 
     

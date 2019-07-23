@@ -174,3 +174,17 @@ class PDQnA(models.Model):
 
     class Meta:
         ordering = ['id']
+
+
+class HotDealNumber(models.Model):
+    product_rnd_number = models.PositiveIntegerField(default=0)
+    updated = models.DateField(auto_now=True)
+
+
+    def __str__(self):
+        # 객체의 이름 - 랜덤 숫자
+        return str(self.product_rnd_number)
+
+    class Meta:
+        ordering = ['id']
+

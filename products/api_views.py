@@ -12,9 +12,9 @@ from django.db.models import Avg
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 
-import boto3
-from django.conf import settings
-from config import s3media
+# import boto3
+# from django.conf import settings
+# from config import s3media
 
 
 class CategoryListView(generics.ListAPIView):
@@ -256,7 +256,9 @@ class StoreHomeView(generics.ListAPIView):
     permission_classes = (AllowAny,)
 
     def get_queryset_product(self):
-        return Product.objects.all()[0:4]
+        result = Product.objects.all()
+        return result
+
         # return Product.objects.all()
 
     def get_queryset_category(self):
