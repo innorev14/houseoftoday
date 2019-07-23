@@ -11,6 +11,12 @@ urlpatterns = [
     path('storehome/', StoreHomeView.as_view()),
     path('ranking/', RankingView.as_view()),
 
+    path('product/review/', ReviewCreateAPIView.as_view()),
+    path('product/review/<int:pk>/', ReviewUpdateAPIView.as_view()),
+
+    path('product/qna/', PDQnACreateAPIView.as_view()),
+    path('product/qna/delete/<int:pk>/', PDQnADeleteAPIView.as_view()),
+
     # path('thumnail/list/', ThumnailListView.as_view()),
     # path('thumnail/<int:pk>/', ThumnailDetailView.as_view()),
     #
