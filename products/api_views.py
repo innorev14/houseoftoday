@@ -8,6 +8,7 @@ from .models import *
 from rest_framework import generics
 from rest_framework.renderers import JSONRenderer
 
+
 class CategoryListView(generics.ListAPIView):
     """
         스토어/카테고리 리스트를 불러옵니다.
@@ -452,4 +453,82 @@ class RankingView(generics.ListAPIView):
         # products = ProductSerializer(source='category', many=True)
 
 
+class ReviewCreateAPIView(generics.CreateAPIView):
+    """
+        상품 리뷰를 생성합니다.
+
+        ---
+        # 권한
+            - 토큰 인증을 해야 합니다.
+
+        다음과 같은 내용으로 요청할 수 있으며, 수정된 값이 리턴됩니다.
+        image의 경우, 파일을 업로드해야 하기 때문에 json으로 요청하실 수 없고 Postman을 사용해야 합니다.
+
+        # 내용
+            - product : "리뷰가 속한 상품의 고유 ID"
+            - star_score : "상품에 대한 리뷰 점수"
+            - image : "업로드 할 리뷰 이미지"
+            - comment : "업로드 할 내용"
+    """
+    queryset = Review.objects.all()
+    serializer_class = ReviewCreateSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class ReviewUpdateAPIView(generics.UpdateAPIView):
+    """
+        상품 리뷰의 특정 id를 가지는 데이터를 수정합니다.
+
+        ---
+        # 권한
+            - 토큰 인증을 해야 합니다.
+
+        다음과 같은 내용으로 요청할 수 있으며, 수정된 값이 리턴됩니다.
+        요청은 PUT, FETCH로 나뉩니다.
+        image의 경우, 파일을 업로드해야 하기 때문에 json으로 요청하실 수 없고 Postman을 사용해야 합니다.
+
+        # 내용
+            - star_score : "상품에 대한 리뷰 점수"
+            - image : "업로드 할 리뷰 이미지"
+            - comment : "업로드 할 내용"
+    """
+    queryset = Review.objects.all()
+    serializer_class = ReviewUpdateSerializer
+
+
+class PDQnACreateAPIView(generics.CreateAPIView):
+    """
+        상품 문의를 생성합니다.
+
+        ---
+        # 권한
+            - 토큰 인증을 해야 합니다.
+
+        다음과 같은 내용으로 요청할 수 있으며, 수정된 값이 리턴됩니다.
+
+        # 내용
+            - product : "문의가 속한 상품의 고유 ID"
+            - type : "상품에 대한 문의유형"
+            - comment : "문의 할 내용"
+    """
+    queryset = PDQnA.objects.all()
+    serializer_class = PDQnACreateSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class PDQnADeleteAPIView(generics.DestroyAPIView):
+    """
+        상품 문의의 특정 id를 가지는 데이터를 삭제합니다.
+
+        ---
+        # 권한
+            - 토큰 인증을 해야 합니다.
+
+        상품 문의의 고유 ID를 입력하면 삭제됩니다.
+    """
+    queryset = PDQnA.objects.all()
 

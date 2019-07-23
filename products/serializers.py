@@ -125,3 +125,28 @@ class CategoryDetailSerializer(serializers.ModelSerializer):
         model = Category
         fields = '__all__'
 
+
+
+
+
+
+# 폼 API 입력 관련..
+
+class ReviewCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = ('product','star_score','image','comment',)
+
+
+class ReviewUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = ('star_score','image','comment',)
+
+
+class PDQnACreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PDQnA
+        fields = ('product', 'type', 'comment',)
+
+

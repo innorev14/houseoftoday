@@ -63,6 +63,10 @@ class Product(models.Model):
     created = models.DateField(auto_now_add=True)
     # 할인율
     discount_rate = models.CharField(max_length=3, blank=True, null=True)
+    # 상품에 대한 리뷰 평균 평점
+    star_avg = models.DecimalField(max_digits=3, decimal_places=2, default=0)
+    # 상품에 대한 리뷰 개수
+    review_count = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         # 객체의 이름 - 상품 이름
@@ -124,7 +128,7 @@ class Review(models.Model):
     # 리뷰가 속한 상품
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
     # 별점
-    star_score = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(5)], default=0)
+    star_score = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)], default=0)
     # 리뷰 이미지 - url 주소 저장
     image = models.ImageField(upload_to='store/review/%Y/%m/%d', blank=True, null=True)
     # 리뷰 내용
