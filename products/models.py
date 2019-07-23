@@ -3,6 +3,7 @@ from django.db import models
 from accounts.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 
+
 class Category(models.Model):
     # 카테고리 이름
     name = models.CharField(max_length=45)

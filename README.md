@@ -68,6 +68,7 @@ FinalProject - House of Today API
 - 19.07.23
     - fix: Update requirements.txt // django-extensions==2.2.1
     - feat: Add the API serializers.py(ReviewCreateSerializer, ReviewUpdateSerializer, PDQnACreateSerializer), api_views.py(ReviewCreateAPIView, ReviewUpdateAPIView, PDQnACreateAPIView, PDQnADeleteAPIView), in connect urls 4 counts.
+    - feat: Add the calculate_review signal class and Update API description
     
 
     

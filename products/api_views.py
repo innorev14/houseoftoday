@@ -8,6 +8,14 @@ from .models import *
 from rest_framework import generics
 from rest_framework.renderers import JSONRenderer
 
+from django.db.models import Avg
+from django.db.models.signals import post_save, post_delete
+from django.dispatch import receiver
+
+import boto3
+from django.conf import settings
+from config import s3media
+
 
 class CategoryListView(generics.ListAPIView):
     """
@@ -38,6 +46,8 @@ class CategoryDetailView(generics.RetrieveAPIView):
                 - brand_name : 상품의 브랜드 이름
                 - name : 상품 이름
                 - price : 상품 가격
+                - review_count : 리뷰 수
+                - star_avg : 리뷰 평점
                 - thumnail_images : 상품 썸네일 이미지
                     - id : 썸네일 이미지의 고유 ID
                     - image : 썸네일 이미지(URL Address)
@@ -52,6 +62,7 @@ class CategoryDetailView(generics.RetrieveAPIView):
     serializer_class = CategoryDetailSerializer
     permission_classes = (AllowAny,)
 
+
 class ProductListView(generics.ListAPIView):
     """
         상품 리스트를 불러옵니다.
@@ -62,6 +73,8 @@ class ProductListView(generics.ListAPIView):
             - brand_name : 상품의 브랜드 이름
             - name : 상품 이름
             - price : 상품 가격
+            - review_count : 리뷰 수
+            - star_avg : 리뷰 평점
             - thumnail_images : 상품 썸네일 이미지
                 - id : 썸네일 이미지의 고유 ID
                 - image : 썸네일 이미지(URL Address)
@@ -149,6 +162,9 @@ class ProductDetailView(generics.RetrieveAPIView):
             - deliver_fee_diff : 지역별 차등 배송비
 
             - created : 상품 업로드 생성 일자
+            - discount_rate : 할인율
+            - star_avg : 리뷰 평점
+            - review_count : 리뷰 수
             - category : 상품이 속한 카테고리의 고유 ID
 
     """
@@ -156,6 +172,7 @@ class ProductDetailView(generics.RetrieveAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductDetailSerializer
     permission_classes = (AllowAny,)
+
 
 class ThumnailListView(generics.ListAPIView):
     renderer_classes = [JSONRenderer]
@@ -213,6 +230,8 @@ class StoreHomeView(generics.ListAPIView):
                 - name : 상품 이름
                 - discount_rate : 할인율
                 - price : 상품 가격
+                - review_count : 리뷰 수
+                - star_avg : 리뷰 평점
                 - thumnail_images : 상품 썸네일 이미지
                     - id : 썸네일 이미지의 고유 ID
                     - image : 썸네일 이미지(URL Address)
@@ -244,7 +263,6 @@ class StoreHomeView(generics.ListAPIView):
 
     permission_classes = (AllowAny,)
 
-
     def get_queryset_product(self):
         return Product.objects.all()[0:4]
         # return Product.objects.all()
@@ -264,9 +282,9 @@ class StoreHomeView(generics.ListAPIView):
         popular_products = self.serializer_class_product(self.get_queryset_popularproducts(), many=True)
 
         return Response({
-            'todaydeal':todaydeal.data,
-            'categories':categories.data,
-            'popular_products':popular_products.data
+            'todaydeal': todaydeal.data,
+            'categories': categories.data,
+            'popular_products': popular_products.data
         })
 
 
@@ -282,6 +300,8 @@ class RankingView(generics.ListAPIView):
                 - name : 상품 이름
                 - discount_rate : 할인율
                 - price : 상품 가격
+                - review_count : 리뷰 수
+                - star_avg : 리뷰 평점
                 - thumnail_images : 상품 썸네일 이미지
                     - id : 썸네일 이미지의 고유 ID
                     - image : 썸네일 이미지(URL Address)
@@ -428,18 +448,19 @@ class RankingView(generics.ListAPIView):
         fabric = self.serializer_class_category_in_product(self.get_queryset_category_in_product3(), many=True)
         kitchenware = self.serializer_class_category_in_product(self.get_queryset_category_in_product7(), many=True)
         home_appliances = self.serializer_class_category_in_product(self.get_queryset_category_in_product5(), many=True)
-        companion_animal = self.serializer_class_category_in_product(self.get_queryset_category_in_product10(), many=True)
+        companion_animal = self.serializer_class_category_in_product(self.get_queryset_category_in_product10(),
+                                                                     many=True)
         furniture = self.serializer_class_category_in_product(self.get_queryset_category_in_product2(), many=True)
 
         return Response({
-            'best100':best100.data,
-            'light_homedeco':light_homedeco.data,
-            'daily_supplies':daily_supplies.data,
-            'fabric':fabric.data,
-            'kitchenware':kitchenware.data,
-            'home_appliances':home_appliances.data,
-            'companion_animal':companion_animal.data,
-            'furniture':furniture.data,
+            'best100': best100.data,
+            'light_homedeco': light_homedeco.data,
+            'daily_supplies': daily_supplies.data,
+            'fabric': fabric.data,
+            'kitchenware': kitchenware.data,
+            'home_appliances': home_appliances.data,
+            'companion_animal': companion_animal.data,
+            'furniture': furniture.data,
         })
         # 카테고리별 best100 : 'best100'
         # 조명&홈데코 4 : 'light_homedeco'
@@ -532,3 +553,27 @@ class PDQnADeleteAPIView(generics.DestroyAPIView):
     """
     queryset = PDQnA.objects.all()
 
+
+# review 작성 시 상품의 전체 리뷰 수와 평점이 계산됨
+@receiver(post_save, sender=Review)
+def calculate_review(sender, **kwargs):
+    pd = kwargs['instance'].product
+    pd.review_count = pd.reviews.count()
+    pd.star_avg = pd.reviews.aggregate(Avg('star_score'))['star_score__avg']
+    pd.save()
+
+# 리뷰를 삭제할 경우 AWS S3에도 삭제되도록 함
+# @receiver(post_delete, sender=Review)
+# def post_delete(sender, instance, **kwargs):
+#     session = boto3.Session(
+#         aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+#         aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+#         region_name=s3media.MediaStorage.region_name
+#     )
+#
+#     # s3.Objects는 s3에 업로드된 파일 객체를 얻어오는 클래스
+#     # arg1 = 버킷네임
+#     # arg2 = 파일 경로 - Key
+#     s3 = session.resource('s3') # s3 권한 가져오기
+#     image = s3.Object(s3media.MediaStorage.bucket_name, str(instance.image))
+#     image.delete()
