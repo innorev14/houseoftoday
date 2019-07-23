@@ -69,7 +69,9 @@ FinalProject - House of Today API
     - fix: Update requirements.txt // django-extensions==2.2.1
     - feat: Add the API serializers.py(ReviewCreateSerializer, ReviewUpdateSerializer, PDQnACreateSerializer), api_views.py(ReviewCreateAPIView, ReviewUpdateAPIView, PDQnACreateAPIView, PDQnADeleteAPIView), in connect urls 4 counts.
     - feat: Add the calculate_review signal class and Update API description
-    
+    - fix: delete ProductSerializer class // review
+    - feat: Update requirements.txt, cron.py // django-crontab==0.7.1
+
 
     
     
