@@ -4,23 +4,29 @@ User = get_user_model()
 
 # Email Login Authentication
 class EmailBackend:
-   def authenticate(self, request, email, password):
-       """
+    def authenticate(self, request, email, password):
+        """
 
-       :param request:
-       :param email: 유저 이메일
-       :param password: 유저 패스워드
-       :return: user object
-       """
-       try:
+        :param request:
+        :param email: 유저 이메일
+        :param password: 유저 패스워드
+        :return: user object
+        """
+        try:
            user = User.objects.get(email=email)
 
-       except User.DoesNotExist:
+        except User.DoesNotExist:
            return None
 
-       # 패스워드 맞는지 검사
-       if user.check_password(password):
+        # 패스워드 맞는지 검사
+        if user.check_password(password):
            return user
+
+    def get_user(self, user_id):
+        try:
+            return User.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            return None
 
 # Social Login Authentication
 class SocialLoginBackend:
