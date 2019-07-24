@@ -189,14 +189,12 @@ class HotDealNumber(models.Model):
 
 
 # Post 요청을 받아서 넣어보고, get을 통해 해당 상품이 제대로 나오는지 확인하기.
-# ProductInItem
 class ProductOrderCart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cart')
     product_option = models.ForeignKey(ProductOption, on_delete=models.CASCADE, related_name='cart')
 
     def __str__(self):
         return str(self.id)
-        # return str(self.user) + str(self.product_option)
 
     class Meta:
         ordering = ['id']
@@ -206,3 +204,42 @@ class ProductOrderCart(models.Model):
     #     if self.product_option.product != self.product:
     #         raise ValueError('ProductOrderItem의 product_option은 선택된 product의 옵션이어야 합니다')
     #     super().save(*args, **kwargs)
+
+
+# ProductOrderCart와 동일한 Depth로 진행.
+class OrderProduct(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='order')
+    product_option = models.ForeignKey(ProductOption, on_delete=models.CASCADE, related_name='order')
+
+    # 받는분, Recipient
+    recipient = models.CharField(max_length=50)
+    # 받는분_우편번호, Recipient_zipcode,
+    rec_zipcode = models.CharField(max_length=10)
+    # 받는분_주소, Recipient_address,
+    rec_address1 = models.CharField(max_length=300)
+    rec_address2 = models.CharField(max_length=200)
+    # 받는분_휴대전화, Recipient_cell phone,
+    rec_phone_number = models.CharField(max_length=30)
+    # 배송 메모, Shipping memo,
+    rec_comment = models.CharField(max_length=500)
+    # 주문자_이름, Orderer_name,
+    orderer_name = models.CharField(max_length=50)
+    # 주문자_이메일, Orderer_email,
+    orderer_email = models.CharField(max_length=100)
+    # 주문자_휴대전화, Orderer_cell phone,
+    orderer_phone_number = models.CharField(max_length=30)
+    # 총 상품 금액
+    total_product_price = models.PositiveIntegerField(default=0)
+    # 배송비
+    deliver_price = models.PositiveIntegerField(default=0)
+    # 총결제금액, Total payment amount,
+    total_payment = models.PositiveIntegerField(default=0)
+
+
+    def __str__(self):
+        return str(self.id)
+
+    class Meta:
+        ordering = ['id']
+
+
