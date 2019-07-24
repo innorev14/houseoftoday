@@ -11,11 +11,11 @@ class ProductAdmin(admin.ModelAdmin):
     fields = ['name', 'price', 'brand_name', 'category', 'detail_name', 'detail_color', 'detail_size',
               'detail_component', 'detail_auth', 'detail_cost', 'detail_standard', 'detail_mfc', 'detail_mis',
               'detail_as', 'return_fee', 'exchange_fee', 'return_address', 'deliver', 'deliver_fee', 'deliver_no_go',
-              'deliver_fee_diff','discount_rate','star_avg','review_count']
+              'deliver_fee_diff', 'discount_rate', 'star_avg', 'review_count']
     list_display = ['id', 'name', 'price', 'brand_name', 'category', 'detail_name', 'detail_color', 'detail_size',
                     'detail_component', 'detail_auth', 'detail_cost', 'detail_standard', 'detail_mfc', 'detail_mis',
                     'detail_as', 'return_fee', 'exchange_fee', 'return_address', 'deliver', 'deliver_fee',
-                    'deliver_no_go', 'deliver_fee_diff', 'created','discount_rate','star_avg','review_count']
+                    'deliver_no_go', 'deliver_fee_diff', 'created', 'discount_rate', 'star_avg', 'review_count']
 
 
 class ProductThumnailAdmin(admin.ModelAdmin):
@@ -46,7 +46,12 @@ class PDQnAAdmin(admin.ModelAdmin):
 
 class HotDealNumberAdmin(admin.ModelAdmin):
     fields = ['product_rnd_number']
-    list_display = ['id','product_rnd_number','updated']
+    list_display = ['id', 'product_rnd_number', 'updated']
+
+
+class ProductOrderCartAdmin(admin.ModelAdmin):
+    fields = ['user', 'product_option']
+    list_display = ['id', 'user', 'product_option']
 
 
 admin.site.register(Category, CategoryAdmin)
@@ -57,4 +62,4 @@ admin.site.register(ProductOption, ProductOptionAdmin)
 admin.site.register(Review, ReviewAdmin)
 admin.site.register(PDQnA, PDQnAAdmin)
 admin.site.register(HotDealNumber, HotDealNumberAdmin)
-
+admin.site.register(ProductOrderCart, ProductOrderCartAdmin)

@@ -108,3 +108,30 @@ class PDQnACreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = PDQnA
         fields = ('product', 'type', 'comment',)
+
+
+# 주문 관련 - 실제 POST 요청
+class ProductOrderCartCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductOrderCart
+        fields = ('user', 'product_option')
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        field = '__all__'
+
+
+# 주문 관련 - 주문 목록 보여주기.
+class ProductOrderCartSerializer(serializers.ModelSerializer):
+    brand_name = serializers.CharField(source='product_option.product.brand_name')
+    product = serializers.CharField(source='product_option.product.name')
+    deliver = serializers.CharField(source='product_option.product.deliver')
+    deliver_fee = serializers.CharField(source='product_option.product.deliver_fee')
+    product_option = serializers.CharField(source='product_option.name')
+    price = serializers.IntegerField(source='product_option.price')
+
+    class Meta:
+        model = ProductOrderCart
+        fields = '__all__'

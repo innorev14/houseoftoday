@@ -1,6 +1,6 @@
 from django.shortcuts import render
 # from requests import Response
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
 from .serializers import *
@@ -15,6 +15,7 @@ from django.db.models import Q
 from datetime import date
 
 import random
+
 
 # import boto3
 # from django.conf import settings
@@ -284,10 +285,8 @@ class StoreHomeView(generics.ListAPIView):
     def get_queryset_category(self):
         return Category.objects.all()
 
-
     def get_queryset_popularproducts(self):
         return Product.objects.all().order_by('-star_avg')
-
 
     def list(self, request, *args, **kwargs):
         todaydeal = self.serializer_class_product(self.get_queryset_product(), many=True)
@@ -549,6 +548,70 @@ class PDQnADeleteAPIView(generics.DestroyAPIView):
         상품 문의의 고유 ID를 입력하면 삭제됩니다.
     """
     queryset = PDQnA.objects.all()
+
+
+class ProductOrderCartCreateAPIView(generics.CreateAPIView):
+    """
+        로그인 중인 회원의 상품 장바구니를 생성합니다.
+
+        ---
+        # 권한
+            - 토큰 인증을 해야 합니다.
+
+        다음과 같은 내용으로 요청할 수 있으며, 수정된 값이 리턴됩니다.
+
+        # 내용
+            - user : "로그인한 유저의 고유 ID"
+            - product_option : "상품에 속한 상품옵션의 고유 ID"
+    """
+    renderer_classes = [JSONRenderer]
+
+    queryset = ProductOrderCart.objects.all()
+    serializer_class = ProductOrderCartCreateSerializer
+    # AllowAny를 변경해야함. 회원만 주문 가능하도록.. 임시방편.
+    permission_classes = (AllowAny,)
+
+    # def perform_create(self, serializer):
+    #     serializer.save(user=self.request.user)
+
+
+class ProductOrderCartAPIView(generics.ListAPIView):
+    """
+        로그인 중인 회원의 상품 장바구니 정보를 불러옵니다.
+
+        ---
+        # 권한
+            - 토큰 인증을 해야 합니다.
+
+        다음과 같은 내용으로 요청할 수 있으며, 수정된 값이 리턴됩니다.
+
+        # 내용
+            - id : "상품 장바구니 고유 ID"
+            - brand_name : 상품의 브랜드 이름
+            - product : 상품 이름
+            - deliver : 배송
+            - deliver_fee : 배송비
+            - product_option : "상품에 속한 상품옵션의 고유 ID"
+            - price : 상품 가격
+            - user : "로그인한 유저의 고유 ID"
+    """
+
+    # brand = serializers.CharField(source='product_option.product.brand_name')
+    # product = serializers.CharField(source='product_option.product.name')
+    # deliver = serializers.CharField(source='product_option.product.deliver')
+    # deliver_fee = serializers.CharField(source='product_option.product.deliver_fee')
+    # product_option = serializers.CharField(source='product_option.name')
+    # price = serializers.IntegerField(source='product_option.price')
+
+    renderer_classes = [JSONRenderer]
+
+    queryset = ProductOrderCart.objects.all()
+    serializer_class = ProductOrderCartSerializer
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(user=self.request.user.id)
+        return queryset
 
 
 # review 작성 시 상품의 전체 리뷰 수와 평점이 계산됨
