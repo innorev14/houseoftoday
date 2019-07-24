@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'accounts',
     'products',
-    'payments',
     'django_crontab',
 ]
 
@@ -215,10 +214,6 @@ SWAGGER_SETTINGS = {
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
-
-IAMPORT_SHOP_ID = ADMIN_IAMPORT_SHOP_ID  # 가맹점 식별코드
-IAMPORT_API_KEY = ADMIN_IAMPORT_API_KEY  # REST API 키
-IAMPORT_API_SECRET = ADMIN_IAMPORT_API_SECRET  # REST API SECRET
 
 CRONJOBS = [
     ('*/1 * * * *', 'myapp.cron.my_scheduled_job'),
