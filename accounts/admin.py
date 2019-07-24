@@ -5,10 +5,12 @@ from .models import User
 from django.contrib.auth.admin import UserAdmin
 
 class CustomUserAdmin(UserAdmin):
-   UserAdmin.fieldsets[1][1]['fields']+=('gender','birthday','profile','message')
+    list_display = ['id', 'type', 'unique_user_id', 'username', 'email']
 
-   UserAdmin.add_fieldsets += (
-       (('Additional Info'), {'fields':('gender','birthday','profile','message')}),
-   )
+    UserAdmin.fieldsets[1][1]['fields']+=('gender','birthday','profile','message')
+
+    UserAdmin.add_fieldsets += (
+        (('Additional Info'), {'fields':('gender','birthday','profile','message')}),
+    )
 
 admin.site.register(User, CustomUserAdmin)
