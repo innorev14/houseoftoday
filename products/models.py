@@ -180,7 +180,6 @@ class HotDealNumber(models.Model):
     product_rnd_number = models.PositiveIntegerField(default=0)
     updated = models.DateField(auto_now=True)
 
-
     def __str__(self):
         # 객체의 이름 - 랜덤 숫자
         return str(self.product_rnd_number)
@@ -188,3 +187,22 @@ class HotDealNumber(models.Model):
     class Meta:
         ordering = ['id']
 
+
+# Post 요청을 받아서 넣어보고, get을 통해 해당 상품이 제대로 나오는지 확인하기.
+# ProductInItem
+class ProductOrderCart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cart')
+    product_option = models.ForeignKey(ProductOption, on_delete=models.CASCADE, related_name='cart')
+
+    def __str__(self):
+        return str(self.id)
+        # return str(self.user) + str(self.product_option)
+
+    class Meta:
+        ordering = ['id']
+
+    # 이한영 강사님이 써주신 것. 여기선 안해도 될듯...
+    # def save(self, *args, **kwargs):
+    #     if self.product_option.product != self.product:
+    #         raise ValueError('ProductOrderItem의 product_option은 선택된 product의 옵션이어야 합니다')
+    #     super().save(*args, **kwargs)

@@ -17,6 +17,11 @@ urlpatterns = [
     path('product/qna/', PDQnACreateAPIView.as_view()),
     path('product/qna/delete/<int:pk>/', PDQnADeleteAPIView.as_view()),
 
+    # 장바구니 생성
+    path('cart/', ProductOrderCartCreateAPIView.as_view()),
+    # 장바구니 목록 보여주기.
+    path('cart/list/', ProductOrderCartAPIView.as_view()),
+
     # path('thumnail/list/', ThumnailListView.as_view()),
     # path('thumnail/<int:pk>/', ThumnailDetailView.as_view()),
     #
@@ -26,9 +31,6 @@ urlpatterns = [
     # path('option/list/', ProductOptionListView.as_view()),
     # path('option/<int:pk>/', ProductOptionDetailView.as_view()),
 ]
-
-
-
 
 ################ Comment Configuration ###################
 
@@ -67,10 +69,3 @@ urlpatterns = [
 #       3) [product_option] -> [id, type, name, price, product] : 해당 제품에 관한 상품 선택사항이 여러개 들어가있음.(1~n개, ComboBox내)
 #       4) [review] -> [id, star_score, image, comment, created, user, product, helpful] : 해당 제품에 관한 리뷰가 여러개 들어가 있음(0~n개)
 #       5) [pdqna] -> [id, type, comment, completed, created, a_author, a_comment, a_created, user, product] : 해당 제품에 관한 문의가 여러개 있음.(0~n개)
-
-
-
-
-
-
-
