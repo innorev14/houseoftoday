@@ -19,8 +19,7 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework.permissions import AllowAny
 from django.conf import settings
-from rest_framework.authtoken.views import obtain_auth_token
-from accounts.api_views import CustomObtainAuthToken
+from accounts.api_views import UsernameObtainAuthToken, EmailObtainAuthToken
 
 schema_view_v1 = get_schema_view(
     openapi.Info(
@@ -39,8 +38,10 @@ schema_view_v1 = get_schema_view(
 urlpatterns = [
     # 관리자 페이지
     path('admin/', admin.site.urls),
-    # api token
-    path('get_token/', CustomObtainAuthToken.as_view()),
+    # api token - username
+    path('get_token/username/', UsernameObtainAuthToken.as_view()),
+    # api token - email
+    path('get_token/email/', EmailObtainAuthToken.as_view()),
     # 유저 관련 페이지
     path('accounts/', include('accounts.urls')),
     # 상품 관련 페이지

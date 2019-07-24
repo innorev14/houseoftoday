@@ -185,7 +185,9 @@ DEBUG_TOOLBAR_PANELS = [
 AUTH_USER_MODEL = 'accounts.User'
 
 AUTHENTICATION_BACKENDS = [
-    'accounts.backends.CustomUserBackend',
+    'django.contrib.auth.backends.ModelBackend',
+    'accounts.backends.EmailBackend',
+    'accounts.backends.SocialBackend',
 ]
 
 REST_FRAMEWORK = {
