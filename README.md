@@ -77,7 +77,9 @@ FinalProject - House of Today API
 
 19.07.24
     - fix: setting.py - TIME_ZONE : 'UTC' -> 'Asia/Seoul'
-    - feat: Create the models.py-ProductOrderCart // serializers.py-ProductOrderCartCreateSerializer, ProductOrderCartSerializer // api_views.py-ProductOrderCartAPIView, ProductOrderCartCreateAPIView // urls.py-cart/, cart/list/ // admin.py-HotDealNumberAdmin, ProductOrderCartAdmin // mean : create shopping basket.  
+    - feat: Create the models.py-ProductOrderCart // serializers.py-ProductOrderCartCreateSerializer, ProductOrderCartSerializer // api_views.py-ProductOrderCartAPIView, ProductOrderCartCreateAPIView // urls.py-cart/, cart/list/ // admin.py-HotDealNumberAdmin, ProductOrderCartAdmin // mean : create shopping basket.
+    - fix: Accounts model - User // type, unique_user_id and AddSocialLoginBackend class
+    - feat: Accounts model makemigrations and migrate
 
 
     
