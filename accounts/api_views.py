@@ -142,15 +142,16 @@ class UsernameObtainAuthToken(ObtainAuthToken):
         ```
     """
 
-# email login
+# 오늘의 집 사이트에서 가입한 유저에게 발급하는 토큰 뷰
 class EmailObtainAuthToken(APIView):
     """
-        회원의 Token key를 생성합니다.
+        오늘의 집에서 가입한 회원의 Token key를 생성합니다.
 
         ---
+        ### 소셜 로그인 사용자의 토큰은 "http://52.78.112.247/get_token/social/"로 요청하시기 바랍니다.
         ### Swagger에서 현재 parameter 값이 출력되지 않습니다.
         ### Postman으로 다음과 같이 요청 테스트를 할 수 있습니다.
-            1) Postman 주소에 "http://52.78.112.247/get_token/email/"을 입력하고 주소 왼쪽에 POST를 선택합니다.
+            1) Postman 주소에 "http://52.78.112.247/get_token/"을 입력하고 주소 왼쪽에 POST를 선택합니다.
             2) 주소 밑에 Body의 form-data를 선택합니다.
             3) KEY에 "email"과 "password"를 입력합니다.
             4) VALUE에 정보를 입력합니다.
@@ -199,6 +200,108 @@ class EmailObtainAuthToken(APIView):
                     schema=coreschema.String(
                         title="Password",
                         description="Valid password for authentication",
+                    ),
+                ),
+            ],
+            encoding="application/json",
+        )
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data,
+                                           context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({'token': token.key})
+
+# 소셜 로그인으로 가입한 유저에게 발급하는 토큰 뷰
+class SocialObtainAuthToken(APIView):
+    """
+            소셜 로그인 사용자의 Token key를 생성합니다.
+
+            ---
+            ### 오늘의 집 로그인을 통해 가입한 사용자의 토큰은 "http://52.78.112.247/get_token/"으로 요청하시기 바랍니다.
+            ### Swagger에서 현재 parameter 값이 출력되지 않습니다.
+            ### Postman으로 다음과 같이 요청 테스트를 할 수 있습니다.
+                1) Postman 주소에 "http://52.78.112.247/get_token/social/"을 입력하고 주소 왼쪽에 POST를 선택합니다.
+                2) 주소 밑에 Body의 form-data를 선택합니다.
+                3) KEY에 "type", 'unique_user_id", "username", "email", "social_profile"을 입력합니다.
+                4) VALUE에 정보를 입력합니다.
+                5) SEND를 누르고 Body의 내용을 확인합니다.
+
+            ### 토큰을 사용하실 때에는 headers에 다음과 같이 입력합니다.
+                1) 사용할 주소를 선택하고 headers를 선택합니다.
+                2) KEY에 "Authorization"을 입력합니다.
+                3) VALUE에 "Token 12313r3tw3wrgrgefqwrqwefw"을 입력하고 SEND를 누릅니다.(*****반드시 Token을 붙여야 합니다.)
+                4) PUT, PATCH 요청인 경우, Body에 정보를 입력하고 SEND를 누릅니다.
+
+            다음과 같은 내용으로 요청할 수 있습니다.
+
+                - type : "한글로 카카오, 구글, 네이버 3가지 중에 하나를 입력하세요."
+                - unique_user_id : "소셜 로그인에서 받아온 정보 중에 UniqueID를 입력하세요."
+                - username : "소셜 로그인에서 받아온 정보 중에 username을 입력하세요."
+                - email : "소셜 로그인에서 받아온 정보 중에 email을 입력하세요."
+                - socail_profile : "소셜 로그인에서 받아온 정보 중에 profile image URL을 입력하세요."
+
+            다음과 같은 내용으로 리턴됩니다.
+            ex)
+            ```
+            {
+                "token": "142wfawefrq23r23rqwdawdvw12db434"
+            }
+            ```
+        """
+    throttle_classes = ()
+    permission_classes = ()
+    parser_classes = (parsers.FormParser, parsers.MultiPartParser, parsers.JSONParser,)
+    renderer_classes = (renderers.JSONRenderer,)
+    serializer_class = SocialAuthTokenSerializer
+    if coreapi is not None and coreschema is not None:
+        schema = ManualSchema(
+            fields=[
+                coreapi.Field(
+                    name="type",
+                    required=True,
+                    location='form',
+                    schema=coreschema.String(
+                        title="Type",
+                        description="Valid Type for authentication",
+                    ),
+                ),
+                coreapi.Field(
+                    name="unique_user_id",
+                    required=True,
+                    location='form',
+                    schema=coreschema.String(
+                        title="UniqueID",
+                        description="Valid UniqueID for authentication",
+                    ),
+                ),
+                coreapi.Field(
+                    name="username",
+                    required=True,
+                    location='form',
+                    schema=coreschema.String(
+                        title="Username",
+                        description="Valid Username for authentication",
+                    ),
+                ),
+                coreapi.Field(
+                    name="email",
+                    required=True,
+                    location='form',
+                    schema=coreschema.String(
+                        title="Email",
+                        description="Valid Email for authentication",
+                    ),
+                ),
+                coreapi.Field(
+                    name="social_profile",
+                    required=True,
+                    location='form',
+                    schema=coreschema.String(
+                        title="Social_profile",
+                        description="Valid Social profile for authentication",
                     ),
                 ),
             ],

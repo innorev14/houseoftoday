@@ -5,7 +5,6 @@ from django.contrib.auth import authenticate
 from django.utils.translation import ugettext_lazy as _
 
 # 유저 목록에 출력될 형식 지정
-
 class UserSerializer(serializers.ModelSerializer):
    class Meta:
        model = User
@@ -15,7 +14,7 @@ class UserSerializer(serializers.ModelSerializer):
 class UserCreateSerializer(serializers.ModelSerializer):
    class Meta:
        model = User
-       fields = ['type', 'email', 'password', 'username']
+       fields = ['email', 'password', 'username']
 
    def create(self, validated_data):
        user = User.objects.create(**validated_data)
@@ -48,8 +47,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
        model = User
        fields = ['id', 'username', 'email', 'gender', 'birthday', 'message', 'profile']
 
-
-# email login
+# Email Login
 class AuthTokenSerializer(serializers.Serializer):
     email = serializers.CharField(label=_("Email"))
     password = serializers.CharField(
@@ -74,6 +72,39 @@ class AuthTokenSerializer(serializers.Serializer):
                 raise serializers.ValidationError(msg, code='authorization')
         else:
             msg = _('Must include "email" and "password".')
+            raise serializers.ValidationError(msg, code='authorization')
+
+        attrs['user'] = user
+        return attrs
+
+# Social Login
+class SocialAuthTokenSerializer(serializers.Serializer):
+    type = serializers.CharField(label=_("Type"))
+    unique_user_id = serializers.CharField(label=_("UniqueID"))
+    username = serializers.CharField(label=_("Username"))
+    email = serializers.CharField(label=_("Email"))
+    social_profile = serializers.CharField(label=_("Social_profile"), allow_blank=True)
+
+    def validate(self, attrs):
+        type = attrs.get('type')
+        unique_user_id = attrs.get('unique_user_id')
+        username = attrs.get('username')
+        email = attrs.get('email')
+        social_profile = attrs.get('social_profile')
+
+        if type and unique_user_id and username and email:
+            user = authenticate(request=self.context.get('request'),
+                                type=type, unique_user_id=unique_user_id,
+                                username=username, email=email, social_profile=social_profile)
+
+            # The authenticate call simply returns None for is_active=False
+            # users. (Assuming the default ModelBackend authentication
+            # backend.)
+            if not user:
+                msg = _('Unable to log in with provided credentials.')
+                raise serializers.ValidationError(msg, code='authorization')
+        else:
+            msg = _('Must include "type" and "UniqueID" and "username" and "email".')
             raise serializers.ValidationError(msg, code='authorization')
 
         attrs['user'] = user

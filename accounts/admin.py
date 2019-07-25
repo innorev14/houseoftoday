@@ -5,7 +5,7 @@ from .models import User
 from django.contrib.auth.admin import UserAdmin
 
 class CustomUserAdmin(UserAdmin):
-    list_display = ['id', 'type', 'unique_user_id', 'username', 'email']
+    list_display = ['id', 'get_type_display', 'unique_user_id', 'username', 'email']
 
     UserAdmin.fieldsets[1][1]['fields']+=('gender','birthday','profile','message')
 
