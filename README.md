@@ -83,6 +83,9 @@ FinalProject - House of Today API
     - fix: settings.py - AUTHENTICATION_BACKEND // 'accounts.backends.SocialBackend' -> 'accounts.backends.SocialLoginBackend'
     - fix: Add the models.py-ProductOrderCart Fields //'recipient','rec_zipcode','rec_address1','rec_address2','rec_phone_number','rec_comment','orderer_name','orderer_email','orderer_phone_number','total_product_price','deliver_price','total_payment'
 
+- 19.07.25
+    - fix: Update Accounts model and backends.py - SocialLoginBackend
+
     
     
     

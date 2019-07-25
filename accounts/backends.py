@@ -30,13 +30,15 @@ class EmailBackend:
 
 # Social Login Authentication
 class SocialLoginBackend:
-    def authenticate(self, request, type, unique_user_id, username, email):
+    def authenticate(self, request, type, unique_user_id, username, email, social_profile):
         """
 
         :param request:
         :param type: 오늘의 집 로그인인지, 소셜로그인인지
         :param unique_user_id: 클라이언트가 보내준 Unique ID
         :param username: 클라이언트가 보내준 유저 정보 중 username
+        :param email: 클라이언트가 보내준 유저 정보 중 email
+        :param social_profile: 클라이언트가 보내준 유저 정보 중 profile image
         :return: User object
         """
         # 추가정보 필요없이 유저를 생성하면 되는 경우
@@ -46,22 +48,10 @@ class SocialLoginBackend:
             defaults={
                 'username': username,
                 'email': email,
+                'social_profile': social_profile,
             },
         )
         return user
-
-        # 추가정보가 필요한 경우(인증 실패처리해야함)
-        # if type == User.TYPE_DJANGO:
-        #     return None
-        #
-        # try:
-        #     user = User.objects.get(
-        #         type=type,
-        #         username = unique_user_id,
-        #     )
-        #     return user
-        # except User.DoesNotExist:
-        #     return None
 
     def get_user(self, user_id):
         try:
