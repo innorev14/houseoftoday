@@ -86,7 +86,8 @@ FinalProject - House of Today API
 - 19.07.25
     - fix: Update Accounts model and backends.py - SocialLoginBackend
 
-    
+- 19.07.26
+    - feat: Create the models.py-ProductOrderCart, Payment, OrderProduct // admin.py-ProductOrderCartAdmin, PaymentAdmin, OrderProductAdmin // serializers.py-ProductOrderCartSerializer, PaymentCreateSerializer // api_views.py-ProductOrderCartCreateAPIView, ProductOrderCartAPIView, PaymentCreateAPIView + receiver to after_payment // urls.py-'cart/', 'cart/list/', 'payment/' // Add the after_payment signal class and Update API description (auto calculated)    
     
     
     

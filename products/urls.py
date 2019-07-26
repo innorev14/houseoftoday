@@ -19,8 +19,22 @@ urlpatterns = [
 
     # 장바구니 생성
     path('cart/', ProductOrderCartCreateAPIView.as_view()),
-    # 장바구니 목록 보여주기.
+    # 장바구니 목록 보여주기. + 결제 페이지 목록
     path('cart/list/', ProductOrderCartAPIView.as_view()),
+
+    # [결제하기] POST 요청
+    path('payment/', PaymentCreateAPIView.as_view()),
+
+
+
+
+
+    # # 결제 완료된 회원 상품목록 등록, 이와 동시에 장바구니에 등록된 해당 회원 상품목록 삭제.
+    # path('order/', OrderProductCreateAPIView.as_view()),
+    # # 결제 전 진행 페이지
+    # path('order/pre', PreOrderProductAPIView.as_view()),
+    # # 결제 완료된 회원 상품목록 보여주기.
+    # path('order/list/', OrderProductAPIView.as_view()),
 
     # path('thumnail/list/', ThumnailListView.as_view()),
     # path('thumnail/<int:pk>/', ThumnailDetailView.as_view()),
