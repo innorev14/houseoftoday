@@ -114,7 +114,7 @@ class PDQnACreateSerializer(serializers.ModelSerializer):
 class ProductOrderCartCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductOrderCart
-        fields = ('user', 'product_option')
+        fields = ('product_option',)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -135,3 +135,54 @@ class ProductOrderCartSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductOrderCart
         fields = '__all__'
+
+
+class PaymentCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Payment
+        exclude = ['user']
+        # fields = ['recipient','rec_zipcode','rec_address1','rec_address2',
+        #           'rec_phone_number','rec_comment','orderer_name','orderer_email',
+        #           'orderer_phone_number','product_price','deliver_price','total_price']
+
+
+# # 결제완료시 바로 주문상품 목록 추가.
+# class OrderProductCreateSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = OrderProduct
+#         fields = ('recipient','rec_zipcode','rec_address1',
+#                   'rec_address2','rec_phone_number','rec_comment','orderer_name',
+#                   'orderer_email','orderer_phone_number','total_product_price','deliver_price','total_payment',)
+#
+#
+# # 결제완료시 바로 등록되야 하는 곳.
+# class OrderProductSerializer(serializers.ModelSerializer):
+#     brand_name = serializers.CharField(source='product_option.product.brand_name')
+#     product = serializers.CharField(source='product_option.product.name')
+#     deliver = serializers.CharField(source='product_option.product.deliver')
+#     deliver_fee = serializers.CharField(source='product_option.product.deliver_fee')
+#     product_option = serializers.CharField(source='product_option.name')
+#     price = serializers.IntegerField(source='product_option.price')
+#
+#     class Meta:
+#         model = OrderProduct
+#         fields = '__all__'
+#
+#
+# # 결제 하기 전 페이지.
+# class PreOrderProductSerializer(serializers.ModelSerializer):
+#     brand_name = serializers.CharField(source='product_option.product.brand_name')
+#     product = serializers.CharField(source='product_option.product.name')
+#     price = serializers.IntegerField(source='product_option.price')
+#     # 임시..
+#     total_product_price = serializers.IntegerField(source='product_option.price')
+#     # 임시.. 변수명이 달라서 고민해봐야함..
+#     deliver_price = serializers.CharField(source='product_option.product.deliver_fee')
+#     # 임시.. 계산 어떻게 하는지 고민해봐야함..
+#     total_payment = serializers.IntegerField(source='product_option.price')
+#
+#     class Meta:
+#         model = OrderProduct
+#         fields = ('brand_name','product','product_option','price','total_product_price','deliver_price','total_payment','user',)
+#

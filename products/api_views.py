@@ -561,7 +561,6 @@ class ProductOrderCartCreateAPIView(generics.CreateAPIView):
         다음과 같은 내용으로 요청할 수 있으며, 수정된 값이 리턴됩니다.
 
         # 내용
-            - user : "로그인한 유저의 고유 ID"
             - product_option : "상품에 속한 상품옵션의 고유 ID"
     """
     renderer_classes = [JSONRenderer]
@@ -571,8 +570,8 @@ class ProductOrderCartCreateAPIView(generics.CreateAPIView):
     # AllowAny를 변경해야함. 회원만 주문 가능하도록.. 임시방편.
     permission_classes = (AllowAny,)
 
-    # def perform_create(self, serializer):
-    #     serializer.save(user=self.request.user)
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 class ProductOrderCartAPIView(generics.ListAPIView):
@@ -587,22 +586,14 @@ class ProductOrderCartAPIView(generics.ListAPIView):
 
         # 내용
             - id : "상품 장바구니 고유 ID"
-            - brand_name : 상품의 브랜드 이름
-            - product : 상품 이름
-            - deliver : 배송
-            - deliver_fee : 배송비
-            - product_option : "상품에 속한 상품옵션의 고유 ID"
-            - price : 상품 가격
+            - brand_name : "상품의 브랜드 이름"
+            - product : "상품 이름"
+            - deliver : "배송"
+            - deliver_fee : "배송비"
+            - product_option : "상품에 속한 상품옵션"
+            - price : "상품 가격"
             - user : "로그인한 유저의 고유 ID"
     """
-
-    # brand = serializers.CharField(source='product_option.product.brand_name')
-    # product = serializers.CharField(source='product_option.product.name')
-    # deliver = serializers.CharField(source='product_option.product.deliver')
-    # deliver_fee = serializers.CharField(source='product_option.product.deliver_fee')
-    # product_option = serializers.CharField(source='product_option.name')
-    # price = serializers.IntegerField(source='product_option.price')
-
     renderer_classes = [JSONRenderer]
 
     queryset = ProductOrderCart.objects.all()
@@ -613,7 +604,61 @@ class ProductOrderCartAPIView(generics.ListAPIView):
         queryset = queryset.filter(user=self.request.user.id)
         return queryset
 
+    # # Backend에서 금액 처리시 고려해야 될 사안. (위 코드와 동일하게 동작함.)
+    # renderer_classes = [JSONRenderer]
+    #
+    # serializer_class_cart = ProductOrderCartSerializer
+    # # serializer_class_price = ProductOrderCartSerializer
+    #
+    # def get_queryset_cart(self):
+    #     queryset = ProductOrderCart.objects.all().filter(user=self.request.user.id)
+    #     return queryset
+    #
+    # # average = round(Review.objects.all().aggregate(Avg('star_score')).get('star_score__avg'), 2)
+    # def list(self, request, *args, **kwargs):
+    #     order_payment = self.serializer_class_cart(self.get_queryset_cart(), many=True)
+    #
+    #     return Response({
+    #         'order_payment': order_payment.data,
+    #     })
+    #
 
+
+class PaymentCreateAPIView(generics.CreateAPIView):
+    """
+        로그인 중인 회원 상품 장바구니 안의 상품을 결제합니다. 결제 후 결제 완료된 장바구니 안의 상품이 삭제되며, 주문상품목록에 결제된 상품이 등록됩니다.
+
+        ---
+        # 권한
+            - 토큰 인증을 해야 합니다.
+
+        다음과 같은 내용으로 요청할 수 있으며, 수정된 값이 리턴됩니다.
+
+        # 내용
+            recipient : "배송지 정보 - 받는분",
+            rec_zipcode : "배송지 정보 - 우편번호",
+            rec_address1 : "배송지 정보 - 주소1",
+            rec_address2 : "배송지 정보 - 주소2",
+            rec_phone_number : "배송지 정보 - 휴대전화",
+            rec_comment : "배송지 정보 - 배송 메모",
+            orderer_name : "주문자 정보 - 이름",
+            orderer_email : "주문자 정보 - 이메일",
+            orderer_phone_number : "주문자 정보 - 휴대전화",
+            product_price : "최종 결제 금액 - 총 상품 금액",
+            deliver_price : "최종 결제 금액 - 배송비",
+            total_price : "최종 결제 금액 - 총 결제금액",
+    """
+    renderer_classes = [JSONRenderer]
+
+    queryset = Payment.objects.all()
+    serializer_class = PaymentCreateSerializer
+    # # AllowAny를 변경해야함. 회원만 주문 가능하도록.. 임시방편.
+    # permission_classes = (AllowAny,)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    
 # review 작성 시 상품의 전체 리뷰 수와 평점이 계산됨
 @receiver(post_save, sender=Review)
 def calculate_review(sender, **kwargs):
@@ -621,6 +666,24 @@ def calculate_review(sender, **kwargs):
     pd.review_count = pd.reviews.count()
     pd.star_avg = pd.reviews.aggregate(Avg('star_score'))['star_score__avg']
     pd.save()
+
+@receiver(post_save, sender=Payment)
+def after_payment(sender, **kwargs):
+    cart_delete_list = []
+    pm = kwargs['instance'].id
+    user = kwargs['instance'].user
+    pd_in_cart_num = user.cart.count()
+    for pd in range(0, pd_in_cart_num):
+        print(user.cart.all()[pd].product_option.id)
+        OrderProduct(user_id=user.id, product_option_id=user.cart.all()[pd].product_option.id, payment_id=pm).save()
+        cart_item = ProductOrderCart.objects.all().get(Q(user_id=user.id) & Q(id=user.cart.all()[pd].id))
+        cart_delete_list.append(cart_item.id)
+
+    for idx in cart_delete_list:
+        cart_delete_item = ProductOrderCart.objects.get(pk=idx)
+        cart_delete_item.delete()
+
+
 
 # 리뷰를 삭제할 경우 AWS S3에도 삭제되도록 함
 # @receiver(post_delete, sender=Review)
@@ -637,3 +700,7 @@ def calculate_review(sender, **kwargs):
 #     s3 = session.resource('s3') # s3 권한 가져오기
 #     image = s3.Object(s3media.MediaStorage.bucket_name, str(instance.image))
 #     image.delete()
+
+
+
+
