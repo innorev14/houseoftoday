@@ -478,7 +478,7 @@ class ReviewCreateAPIView(generics.CreateAPIView):
         # 권한
             - 토큰 인증을 해야 합니다.
 
-        다음과 같은 내용으로 요청할 수 있으며, 수정된 값이 리턴됩니다.
+        다음과 같은 내용으로 요청할 수 있으며, 생성된 값이 리턴됩니다.
         image의 경우, 파일을 업로드해야 하기 때문에 json으로 요청하실 수 없고 Postman을 사용해야 합니다.
 
         # 내용
@@ -558,7 +558,7 @@ class ProductOrderCartCreateAPIView(generics.CreateAPIView):
         # 권한
             - 토큰 인증을 해야 합니다.
 
-        다음과 같은 내용으로 요청할 수 있으며, 수정된 값이 리턴됩니다.
+        다음과 같은 내용으로 요청할 수 있으며, 생성된 값이 리턴됩니다.
 
         # 내용
             - product_option : "상품에 속한 상품옵션의 고유 ID"
@@ -582,17 +582,15 @@ class ProductOrderCartAPIView(generics.ListAPIView):
         # 권한
             - 토큰 인증을 해야 합니다.
 
-        다음과 같은 내용으로 요청할 수 있으며, 수정된 값이 리턴됩니다.
-
         # 내용
-            - id : "상품 장바구니 고유 ID"
-            - brand_name : "상품의 브랜드 이름"
-            - product : "상품 이름"
-            - deliver : "배송"
-            - deliver_fee : "배송비"
-            - product_option : "상품에 속한 상품옵션"
-            - price : "상품 가격"
-            - user : "로그인한 유저의 고유 ID"
+            - id : 상품 장바구니 고유 ID
+            - brand_name : 상품의 브랜드 이름
+            - product : 상품 이름
+            - deliver : 배송
+            - deliver_fee : 배송비
+            - product_option : 상품 옵션
+            - price : 상품 가격
+            - user : 로그인한 유저의 고유 ID
     """
     renderer_classes = [JSONRenderer]
 
@@ -604,25 +602,6 @@ class ProductOrderCartAPIView(generics.ListAPIView):
         queryset = queryset.filter(user=self.request.user.id)
         return queryset
 
-    # # Backend에서 금액 처리시 고려해야 될 사안. (위 코드와 동일하게 동작함.)
-    # renderer_classes = [JSONRenderer]
-    #
-    # serializer_class_cart = ProductOrderCartSerializer
-    # # serializer_class_price = ProductOrderCartSerializer
-    #
-    # def get_queryset_cart(self):
-    #     queryset = ProductOrderCart.objects.all().filter(user=self.request.user.id)
-    #     return queryset
-    #
-    # # average = round(Review.objects.all().aggregate(Avg('star_score')).get('star_score__avg'), 2)
-    # def list(self, request, *args, **kwargs):
-    #     order_payment = self.serializer_class_cart(self.get_queryset_cart(), many=True)
-    #
-    #     return Response({
-    #         'order_payment': order_payment.data,
-    #     })
-    #
-
 
 class PaymentCreateAPIView(generics.CreateAPIView):
     """
@@ -632,33 +611,55 @@ class PaymentCreateAPIView(generics.CreateAPIView):
         # 권한
             - 토큰 인증을 해야 합니다.
 
-        다음과 같은 내용으로 요청할 수 있으며, 수정된 값이 리턴됩니다.
-
-        # 내용
-            recipient : "배송지 정보 - 받는분",
-            rec_zipcode : "배송지 정보 - 우편번호",
-            rec_address1 : "배송지 정보 - 주소1",
-            rec_address2 : "배송지 정보 - 주소2",
-            rec_phone_number : "배송지 정보 - 휴대전화",
-            rec_comment : "배송지 정보 - 배송 메모",
-            orderer_name : "주문자 정보 - 이름",
-            orderer_email : "주문자 정보 - 이메일",
-            orderer_phone_number : "주문자 정보 - 휴대전화",
-            product_price : "최종 결제 금액 - 총 상품 금액",
-            deliver_price : "최종 결제 금액 - 배송비",
-            total_price : "최종 결제 금액 - 총 결제금액",
+        토큰 인증을 하신 후, 내용없이 요청하시면 됩니다.
     """
     renderer_classes = [JSONRenderer]
 
     queryset = Payment.objects.all()
     serializer_class = PaymentCreateSerializer
+
     # # AllowAny를 변경해야함. 회원만 주문 가능하도록.. 임시방편.
     # permission_classes = (AllowAny,)
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        user = self.request.user
+        # 장바구니에 담긴 총 상품 가격 얻기
+        total_price = user.cart.aggregate(Sum('product_option_id__price'))['product_option_id__price__sum']
+        serializer.save(user=user)
+        serializer.save(product_price=total_price)
+        serializer.save(deliver_price=0)
+        serializer.save(total_price=total_price)
 
-    
+
+class PaymentAPIView(generics.ListAPIView):
+    """
+        로그인 중인 사용자의 결제 완료된 목록을 보여줍니다.
+
+        ---
+        # 권한
+            - 토큰 인증을 해야 합니다.
+
+        # 내용
+            - id : 결제 고유 ID, 주문 번호로 활용 가능
+            - order_products : 주문한 상품 목록
+                - product : 주문한 상품 이름
+                - product_option : 주문한 상품 옵션
+            - product_price : 주문한 상품의 전체 가격
+            - deliver_price : 배송비
+            - total_price : 총 결제 가격
+            - created : "결제 완료 일자"
+    """
+    renderer_classes = [JSONRenderer]
+
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(user=self.request.user.id)
+        return queryset
+
+
 # review 작성 시 상품의 전체 리뷰 수와 평점이 계산됨
 @receiver(post_save, sender=Review)
 def calculate_review(sender, **kwargs):
@@ -667,6 +668,8 @@ def calculate_review(sender, **kwargs):
     pd.star_avg = pd.reviews.aggregate(Avg('star_score'))['star_score__avg']
     pd.save()
 
+
+# 결제 완료 시(Payment model save) 장바구니 모델에 저장되있던 목록을 주문 목록으로 옮기고 장바구니 모델 저장 내용 삭제
 @receiver(post_save, sender=Payment)
 def after_payment(sender, **kwargs):
     cart_delete_list = []
@@ -683,8 +686,6 @@ def after_payment(sender, **kwargs):
         cart_delete_item = ProductOrderCart.objects.get(pk=idx)
         cart_delete_item.delete()
 
-
-
 # 리뷰를 삭제할 경우 AWS S3에도 삭제되도록 함
 # @receiver(post_delete, sender=Review)
 # def post_delete(sender, instance, **kwargs):
@@ -700,7 +701,3 @@ def after_payment(sender, **kwargs):
 #     s3 = session.resource('s3') # s3 권한 가져오기
 #     image = s3.Object(s3media.MediaStorage.bucket_name, str(instance.image))
 #     image.delete()
-
-
-
-

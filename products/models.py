@@ -177,7 +177,9 @@ class PDQnA(models.Model):
 
 
 class HotDealNumber(models.Model):
+    # 랜덤 숫자를 위한 필드
     product_rnd_number = models.PositiveIntegerField(default=0)
+    # 날짜 비교를 위한 필드
     updated = models.DateField(auto_now=True)
 
     def __str__(self):
@@ -190,16 +192,17 @@ class HotDealNumber(models.Model):
 
 # 장바구니
 class ProductOrderCart(models.Model):
+    # 주문하는 유저
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cart')
+    # 상품 옵션
     product_option = models.ForeignKey(ProductOption, on_delete=models.CASCADE, related_name='cart')
 
     def __str__(self):
-        return str(self.id)
+        return "(" + self.user.username + ")" + self.product_option.name
 
     class Meta:
         ordering = ['id']
 
-    # 이한영 강사님이 써주신 것. 여기선 안해도 될듯...
     # def save(self, *args, **kwargs):
     #     if self.product_option.product != self.product:
     #         raise ValueError('ProductOrderItem의 product_option은 선택된 product의 옵션이어야 합니다')
@@ -208,24 +211,8 @@ class ProductOrderCart(models.Model):
 
 # 결제
 class Payment(models.Model):
+    # 결제하는 유저
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='order')
-    # 받는분, Recipient
-    recipient = models.CharField(max_length=50)
-    # 받는분_우편번호, Recipient_zipcode,
-    rec_zipcode = models.CharField(max_length=10)
-    # 받는분_주소, Recipient_address,
-    rec_address1 = models.CharField(max_length=300)
-    rec_address2 = models.CharField(max_length=200)
-    # 받는분_휴대전화, Recipient_cell phone,
-    rec_phone_number = models.CharField(max_length=30)
-    # 배송 메모, Shipping memo,
-    rec_comment = models.CharField(max_length=500)
-    # 주문자_이름, Orderer_name,
-    orderer_name = models.CharField(max_length=50)
-    # 주문자_이메일, Orderer_email,
-    orderer_email = models.CharField(max_length=100)
-    # 주문자_휴대전화, Orderer_cell phone,
-    orderer_phone_number = models.CharField(max_length=30)
     # 총 상품 금액
     product_price = models.PositiveIntegerField(default=0)
     # 배송비
@@ -235,49 +222,26 @@ class Payment(models.Model):
     # 생성날짜 및 시간
     created = models.DateTimeField(auto_now_add=True)
 
-
-    # cart_list = ProductOrderCart.objects.all()
-    # user 부분에서 어떻게 받을지.. filter 고민해 봐야함.
-    # cart_cnt = ProductOrderCart.objects.filter(user=1).count()
-
-    # order_cnt = self.objects.count()
-
-    # 일단 전부 저장되는 것으로 진행...
-    # 허성윤 유작.
-    # def save(self, *args, **kwargs):
-    #     super().save(*args, **kwargs)
-    #     order_cnt = OrderProduct.objects.all().count()
-    #     order_user = OrderProduct.objects.all()[order_cnt-2].user
-    #     cart_list = ProductOrderCart.objects.filter(user=order_user)
-    #     cart_cnt = ProductOrderCart.objects.filter(user=order_user).count()
-    #
-    #     for i in range(0, cart_cnt):
-    #         cart_list[i].delete()
-
-    # 이한영 강사님이 써주신 것. 여기선 안해도 될듯...
-    # def save(self, *args, **kwargs):
-    #     if self.product_option.product != self.product:
-    #         raise ValueError('ProductOrderItem의 product_option은 선택된 product의 옵션이어야 합니다')
-    #     super().save(*args, **kwargs)
-
     def __str__(self):
-        return str(self.id)
+        return "(" + self.user.username + ")" + "주문번호:" + str(self.id)
 
     class Meta:
         ordering = ['id']
 
 
-# 결제 후 이동한 상품목록
-# ProductOrderCart와 동일한 Depth로 진행.
+# 결제 후 이동한 상품목록 = 주문이 완료된 상품 목록
 class OrderProduct(models.Model):
+    # 주문한 유저
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='order_product')
+    # 주문한 상품 옵션
     product_option = models.ForeignKey(ProductOption, on_delete=models.CASCADE, related_name='order_product')
+    # 주문한 결제 번호
     payment = models.ForeignKey(Payment, on_delete=models.CASCADE, related_name='order_product')
-    # 생성날짜 및 시간
+    # 생성 일자
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return str(self.id)
+        return "(" + self.user.username + ")" + self.product_option.name
 
     class Meta:
         ordering = ['id']
