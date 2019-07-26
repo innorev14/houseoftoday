@@ -19,11 +19,13 @@ urlpatterns = [
 
     # 장바구니 생성
     path('cart/', ProductOrderCartCreateAPIView.as_view()),
-    # 장바구니 목록 보여주기. + 결제 페이지 목록
+    # 장바구니 목록
     path('cart/list/', ProductOrderCartAPIView.as_view()),
 
-    # [결제하기] POST 요청
+    # 주문/결제 생성
     path('payment/', PaymentCreateAPIView.as_view()),
+    # 결제 완료된 목록
+    path('payment/list/', PaymentAPIView.as_view()),
 
 
 

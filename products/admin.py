@@ -12,10 +12,7 @@ class ProductAdmin(admin.ModelAdmin):
               'detail_component', 'detail_auth', 'detail_cost', 'detail_standard', 'detail_mfc', 'detail_mis',
               'detail_as', 'return_fee', 'exchange_fee', 'return_address', 'deliver', 'deliver_fee', 'deliver_no_go',
               'deliver_fee_diff', 'discount_rate', 'star_avg', 'review_count']
-    list_display = ['id', 'name', 'price', 'brand_name', 'category', 'detail_name', 'detail_color', 'detail_size',
-                    'detail_component', 'detail_auth', 'detail_cost', 'detail_standard', 'detail_mfc', 'detail_mis',
-                    'detail_as', 'return_fee', 'exchange_fee', 'return_address', 'deliver', 'deliver_fee',
-                    'deliver_no_go', 'deliver_fee_diff', 'created', 'discount_rate', 'star_avg', 'review_count']
+    list_display = ['id', 'name', 'price', 'brand_name', 'star_avg', 'review_count']
 
 
 class ProductThumnailAdmin(admin.ModelAdmin):
@@ -57,23 +54,14 @@ class ProductOrderCartAdmin(admin.ModelAdmin):
 
 # 결제Admin
 class PaymentAdmin(admin.ModelAdmin):
-    fields = ['user','recipient','rec_zipcode','rec_address1','rec_address2','rec_phone_number','rec_comment',
-              'orderer_name','orderer_email','orderer_phone_number','product_price','deliver_price','total_price']
-    list_display = ['id', 'user', 'recipient', 'rec_zipcode', 'rec_address1', 'rec_address2', 'rec_phone_number',
-                    'rec_comment', 'orderer_name', 'orderer_email', 'orderer_phone_number', 'product_price',
-                    'deliver_price', 'total_price', 'created']
+    fields = ['user', 'product_price', 'deliver_price', 'total_price']
+    list_display = ['id', 'user', 'product_price', 'deliver_price', 'total_price', 'created']
 
 
 # 결제상품목록Admin
 class OrderProductAdmin(admin.ModelAdmin):
-    fields = ['user','product_option','payment']
-    list_display = ['id','user','product_option','payment','created']
-
-
-# class OrderProductAdmin(admin.ModelAdmin):
-#     fields = ['user', 'product_option','recipient','rec_zipcode','rec_address1','rec_address2','rec_phone_number','rec_comment','orderer_name','orderer_email','orderer_phone_number','total_product_price','deliver_price','total_payment']
-#     list_display = ['id', 'user', 'product_option','recipient','rec_zipcode','total_payment']
-
+    fields = ['user', 'product_option', 'payment']
+    list_display = ['id', 'user', 'product_option', 'payment', 'created']
 
 
 admin.site.register(Category, CategoryAdmin)
