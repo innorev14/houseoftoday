@@ -595,6 +595,7 @@ class ProductOrderCartAPIView(generics.ListAPIView):
             - product_option : 상품 옵션
             - price : 상품 가격
             - user : 로그인한 유저의 고유 ID
+            - image : 해당 상품에 대한 대표 썸네일 이미지(1장) url
     """
     renderer_classes = [JSONRenderer]
 

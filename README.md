@@ -96,5 +96,5 @@ FinalProject - House of Today API
     - feat: Create the models.py-DirectPayment // It was added for direct payment.
     - feat: Make Project app - community
     - feat: Create the API serializers.py-DirectPaymentCreateSerializer // api_views.py-DirectPaymentCreateAPIView, @receiver-after_direct_payment // urls.py-url('payment/direct/') // admin.py-DirectPaymentAdmin // Main content: When a record is added to 'DirectPayment', the record is automatically saved to 'OrderProduct'.
-    
+    - fix: products-api_views.py-ProductOrderCartAPIView : add the swagger comment 'image' // accounts-admin.py-CustomUserAdmin : add the 'social_profile' in list_display
     
