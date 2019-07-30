@@ -66,8 +66,8 @@ class DirectPaymentAdmin(admin.ModelAdmin):
 
 # 결제상품목록Admin
 class OrderProductAdmin(admin.ModelAdmin):
-    fields = ['user', 'product_option', 'payment']
-    list_display = ['id', 'user', 'product_option', 'payment', 'created']
+    fields = ['user', 'product_option', 'payment', 'direct_payment']
+    list_display = ['id', 'user', 'product_option', 'payment', 'direct_payment', 'created']
 
 
 admin.site.register(Category, CategoryAdmin)
