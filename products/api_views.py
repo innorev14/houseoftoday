@@ -463,6 +463,8 @@ class RankingView(generics.ListAPIView):
         # 생활용품 6 : 'daily_supplies'
         # 패브릭 3 : 'fabric'
         # 주방용품 7 : 'kitchenware'
+
+
         # 가전제품 5 : 'home_appliances'
         # 반려 동물 10 : 'companion_animal'
         # 가구 2 : 'furniture'

@@ -85,7 +85,8 @@ class ProductThumnail(models.Model):
 
     def __str__(self):
         # 객체의 이름 - 썸네일 이미지의 url 주소
-        return self.image
+        # return str(self.image) + " " + str(self.product)
+        return str(self.product)
 
     class Meta:
         ordering = ['id']
@@ -209,10 +210,32 @@ class ProductOrderCart(models.Model):
     #     super().save(*args, **kwargs)
 
 
-# 결제
+# 결제(장바구니를 통한)
 class Payment(models.Model):
     # 결제하는 유저
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='order')
+    # 총 상품 금액
+    product_price = models.PositiveIntegerField(default=0)
+    # 배송비
+    deliver_price = models.PositiveIntegerField(default=0)
+    # 총결제금액, Total payment amount,
+    total_price = models.PositiveIntegerField(default=0)
+    # 생성날짜 및 시간
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return "(" + self.user.username + ")" + "주문번호:" + str(self.id)
+
+    class Meta:
+        ordering = ['id']
+
+
+# 상품에서 바로결제 누르면 결제항목으로 이동하기 위한 모델
+class DirectPayment(models.Model):
+    # 결제하는 유저
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='directorder')
+    # 주문한 상품 옵션
+    product_option = models.ForeignKey(ProductOption, on_delete=models.CASCADE, related_name='directorder')
     # 총 상품 금액
     product_price = models.PositiveIntegerField(default=0)
     # 배송비
@@ -235,8 +258,10 @@ class OrderProduct(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='order_product')
     # 주문한 상품 옵션
     product_option = models.ForeignKey(ProductOption, on_delete=models.CASCADE, related_name='order_product')
-    # 주문한 결제 번호
-    payment = models.ForeignKey(Payment, on_delete=models.CASCADE, related_name='order_product')
+    # 주문한 결제 번호(장바구니를 통한 결제 관련)
+    payment = models.ForeignKey(Payment, on_delete=models.CASCADE, related_name='order_product', blank=True, null=True)
+    # 주문한 결제 번호(바로 결제하기 관련)
+    direct_payment = models.ForeignKey(DirectPayment, on_delete=models.CASCADE, related_name='order_product', blank=True, null=True)
     # 생성 일자
     created = models.DateTimeField(auto_now_add=True)
 

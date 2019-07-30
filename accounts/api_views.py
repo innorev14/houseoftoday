@@ -241,7 +241,7 @@ class SocialObtainAuthToken(APIView):
                 - unique_user_id : "소셜 로그인에서 받아온 정보 중에 UniqueID를 입력하세요."
                 - username : "소셜 로그인에서 받아온 정보 중에 username을 입력하세요."
                 - email : "소셜 로그인에서 받아온 정보 중에 email을 입력하세요."
-                - socail_profile : "소셜 로그인에서 받아온 정보 중에 profile image URL을 입력하세요."
+                - social_profile : "소셜 로그인에서 받아온 정보 중에 profile image URL을 입력하세요."
 
             다음과 같은 내용으로 리턴됩니다.
             ex)
