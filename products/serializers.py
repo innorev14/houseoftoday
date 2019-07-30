@@ -4,11 +4,18 @@ from rest_framework.fields import SerializerMethodField
 
 from .models import *
 
-
+# 썸네일 이미지 정보 전체 보여주기용
 class ThumnailImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductThumnail
         fields = '__all__'
+
+
+# 장바구니에서 이미지 url만 추출하기 위한 용도
+# class ThumnailImageURLSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = ProductThumnail
+#         fields = ['image']
 
 
 class DetailImageSerializer(serializers.ModelSerializer):
@@ -118,6 +125,10 @@ class ProductOrderCartCreateSerializer(serializers.ModelSerializer):
 
 
 # GET - 장바구니
+# source 관련 참조 : https://stackoverflow.com/questions/32166826/django-rest-framework-how-to-get-field-of-foreign-key-of-a-foreign-key
+
+# 쿼리 쓰던가 meta쓰던
+
 class ProductOrderCartSerializer(serializers.ModelSerializer):
     brand_name = serializers.CharField(source='product_option.product.brand_name')
     product = serializers.CharField(source='product_option.product.name')
@@ -129,6 +140,24 @@ class ProductOrderCartSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductOrderCart
         fields = '__all__'
+
+    def to_representation(self, instance):
+        serializer_data = super().to_representation(instance)
+        # instance: 구매자, 상품옵션번호, 상품옵션이름 이 나옴. ex) (admin)06. 모노릴렉스(누빔)(15,900원)
+        # print(instance)
+        # serializer_data['product']: 상품옵션이름이 나옴. --> ex) 디어썸머 리플 여름차렵이불(단품/세트) 14colors
+        # print(serializer_data['product'])
+        pd = Product.objects.get(name=serializer_data['product'])
+        # Product와 현재Cart내 상품에 맞는게 나오도록 filter를 걸어줌. print결과로는 안보이나 그렇다.. ex) 디어썸머 리플 여름차렵이불(단품/세트) 14colors
+        # print(pd)
+        # QuerySet으로 ProductThumnail에 관한 여러 필드의 값을 Dictionary형태로 받아온다.
+        # print(pd.product_thumnail.all())
+        # Queryset의 여러 값 중 최상단(각 상품의 최상단 id 한개) 하나를 가져옴.
+        thumnail_images = pd.product_thumnail.all()[0]
+        # 여러 필드의 값 중 image에 해당하는 url Text만 별개로 가져온다.
+        serializer_data['image'] = thumnail_images.image
+        # 해당 url을 리턴시킴. 여기서 변수명은 'image' 로써, 출력값은 ex) "image": "https://image.ohou.se/image/..." 으로 나오게 된다.
+        return serializer_data
 
 
 # 주문이 완료된 상품 목록

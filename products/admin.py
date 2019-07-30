@@ -52,10 +52,16 @@ class ProductOrderCartAdmin(admin.ModelAdmin):
     list_display = ['id', 'user', 'product_option']
 
 
-# 결제Admin
+# 결제(장바구니를 통한)Admin
 class PaymentAdmin(admin.ModelAdmin):
     fields = ['user', 'product_price', 'deliver_price', 'total_price']
     list_display = ['id', 'user', 'product_price', 'deliver_price', 'total_price', 'created']
+
+
+# 바로결제하기Admin
+class DirectPaymentAdmin(admin.ModelAdmin):
+    fields = ['user', 'product_option', 'product_price', 'deliver_price', 'total_price']
+    list_display = ['id', 'product_option', 'user', 'product_price', 'deliver_price', 'total_price', 'created']
 
 
 # 결제상품목록Admin
@@ -74,4 +80,5 @@ admin.site.register(PDQnA, PDQnAAdmin)
 admin.site.register(HotDealNumber, HotDealNumberAdmin)
 admin.site.register(ProductOrderCart, ProductOrderCartAdmin)
 admin.site.register(Payment, PaymentAdmin)
+admin.site.register(DirectPayment, DirectPaymentAdmin)
 admin.site.register(OrderProduct, OrderProductAdmin)
