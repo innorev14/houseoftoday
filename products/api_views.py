@@ -6,7 +6,7 @@ from .models import *
 from rest_framework import generics
 from rest_framework.renderers import JSONRenderer
 
-from django.db.models import Avg
+from django.db.models import Avg, Sum
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.db.models import Q
