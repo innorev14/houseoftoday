@@ -94,5 +94,6 @@ FinalProject - House of Today API
 - 19.07.30
     - fix: Add the API serializers.py-ProductOrderCartSerializer // Add the ProductThumnail image One. -> field name : 'image'
     - feat: Create the models.py-DirectPayment // It was added for direct payment.
+    - feat: Make Project app - community
     
     

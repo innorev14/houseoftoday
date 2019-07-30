@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'accounts',
     'products',
+    'community',
     'django_crontab',
 ]
 
