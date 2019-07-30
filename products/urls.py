@@ -24,10 +24,8 @@ urlpatterns = [
 
     # 주문/결제 생성 - 장바구니 이용
     path('payment/', PaymentCreateAPIView.as_view()),
-
     # 주문/결제 생성 - [결제하기] 버튼을 통한 장바구니 없이 결제하기.
-    # path('payment/direct/', ),
-
+    path('payment/direct/', DirectPaymentCreateAPIView.as_view()),
     # 결제 완료된 목록
     path('payment/list/', PaymentAPIView.as_view()),
 

@@ -1,4 +1,3 @@
-from django.db.models import Avg, Count, F, Sum, Case, When
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 
@@ -9,13 +8,6 @@ class ThumnailImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductThumnail
         fields = '__all__'
-
-
-# 장바구니에서 이미지 url만 추출하기 위한 용도
-# class ThumnailImageURLSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = ProductThumnail
-#         fields = ['image']
 
 
 class DetailImageSerializer(serializers.ModelSerializer):
@@ -126,9 +118,6 @@ class ProductOrderCartCreateSerializer(serializers.ModelSerializer):
 
 # GET - 장바구니
 # source 관련 참조 : https://stackoverflow.com/questions/32166826/django-rest-framework-how-to-get-field-of-foreign-key-of-a-foreign-key
-
-# 쿼리 쓰던가 meta쓰던
-
 class ProductOrderCartSerializer(serializers.ModelSerializer):
     brand_name = serializers.CharField(source='product_option.product.brand_name')
     product = serializers.CharField(source='product_option.product.name')
@@ -170,10 +159,17 @@ class OrderProductSerializer(serializers.ModelSerializer):
         fields = ['product', 'product_option']
 
 
-# POST - 결제하기
+# POST - 결제하기(장바구니 이용)
 class PaymentCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Payment
+        exclude = ['user']
+
+
+# POST - 바로결제하기(장바구니 없이 직접)
+class DirectPaymentCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DirectPayment
         exclude = ['user']
 
 
