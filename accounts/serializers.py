@@ -8,7 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 class UserSerializer(serializers.ModelSerializer):
    class Meta:
        model = User
-       fields = ['id', 'username', 'email', 'gender', 'birthday', 'message', 'profile']
+       fields = ['id', 'username', 'email', 'social_profile', 'gender', 'birthday', 'message', 'profile']
 
 # 회원 가입할 때 필요한 필드들에 관한 Serializer
 class UserCreateSerializer(serializers.ModelSerializer):
@@ -27,7 +27,7 @@ class UserModifySerializer(serializers.ModelSerializer):
 
    class Meta:
        model = User
-       fields = ['username', 'email', 'gender', 'birthday', 'message', 'profile']
+       fields = ['username', 'email', 'social_profile', 'gender', 'birthday', 'message', 'profile']
        read_only_fields = ['email']
 
    # 기존의 update 함수를 오버라이딩해서 사용한다.
