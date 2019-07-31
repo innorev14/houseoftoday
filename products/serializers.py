@@ -180,3 +180,4 @@ class PaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Payment
         exclude = ['user']
+

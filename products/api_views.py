@@ -10,10 +10,6 @@ from django.db.models import Avg , Sum
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.db.models import Q
-from datetime import date
-
-import random
-
 
 # import boto3
 # from django.conf import settings
@@ -258,19 +254,8 @@ class StoreHomeView(generics.ListAPIView):
 
     permission_classes = (AllowAny,)
 
-    # 하루가 지나면 오늘의 상품 날짜를 바꾸도록 HotDealNumber의 숫자 변경
-    def updated_hot_deal_num(self):
-        for i in range(1, 5):
-            num = random.randrange(0, 181)
-            print(num)
-            HotDealNumber(id=i, product_rnd_number=num).save()
-
     def get_queryset_product(self):
-        today = date.today()
         hot_deal_num = HotDealNumber.objects.all()
-
-        if not today == hot_deal_num[0].updated:
-            self.updated_hot_deal_num()
 
         result = Product.objects.all().filter(Q(id=hot_deal_num[0].product_rnd_number)
                                               | Q(id=hot_deal_num[1].product_rnd_number)
@@ -693,6 +678,7 @@ class PaymentAPIView(generics.ListAPIView):
             - deliver_price : 배송비
             - total_price : 총 결제 가격
             - created : "결제 완료 일자"
+            - image : 해당 상품에 대한 대표 썸네일 이미지(1장) url
     """
     renderer_classes = [JSONRenderer]
 
