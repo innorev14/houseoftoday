@@ -105,3 +105,8 @@ FinalProject - House of Today API
     - feat: Add community model // Housewarming, DetailContent, HousewarmingComment
     - fix: Add the community-models.py-DetailContent Connect ForeignKey // fix the settings.py-CRONJOBS
     - fix: Update products model // OrderItem, Order
+
+
+- 19.08.01
+    - fix: add the coummnity app makemigrations & migrate -> models.py-(Double the maximum_length text volume of the model.) & change settings.py-CRONJOBS (* 0 * * *) -> (0 0 * * *) (Changed the execution time of CRONJOBS)
+    
