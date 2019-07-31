@@ -104,3 +104,4 @@ FinalProject - House of Today API
     - feat: add the models.py-CronLog // admin.py-CronLogAdmin // remove the api_views.py-StoreHomeView HotDealNumber (comment: Create random int code.) --> Add the cron.py-my_scheduled_job (comment: Create random int code.) // The number of 'HotDealNumber' models was set to automatically change to crontab at midnight every day.
     - feat: Add community model // Housewarming, DetailContent, HousewarmingComment
     - fix: Add the community-models.py-DetailContent Connect ForeignKey // fix the settings.py-CRONJOBS
+    - fix: Update products model // OrderItem, Order
