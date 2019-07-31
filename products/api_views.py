@@ -538,16 +538,6 @@ class PDQnADeleteAPIView(generics.DestroyAPIView):
     """
     queryset = PDQnA.objects.all()
 
-
-# review 작성 시 상품의 전체 리뷰 수와 평점이 계산됨
-# @receiver(post_save, sender=Review)
-# def calculate_review(sender, **kwargs):
-#     pd = kwargs['instance'].product
-#     pd.review_count = pd.reviews.count()
-#     pd.star_avg = pd.reviews.aggregate(Avg('star_score'))['star_score__avg']
-#     pd.save()
-
-
 # 결제 완료 시(Payment model save) 장바구니 모델에 저장되있던 목록을 주문 목록으로 옮기고 장바구니 모델 저장 내용 삭제
 # @receiver(post_save, sender=Payment)
 # def after_payment(sender, **kwargs):

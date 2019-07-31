@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Avg
 
 from accounts.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -144,6 +145,10 @@ class Review(models.Model):
 
     def save(self, *args, **kwargs):
         super(Review, self).save(*args, **kwargs)
+        product = self.product
+        product.review_count = product.reviews.count()
+        product.star_avg = product.reviews.aggregate(Avg('star_score'))['star_score__avg']
+        product.save()
 
     class Meta:
         ordering = ['id']
@@ -202,10 +207,14 @@ class CronLog(models.Model):
     class Meta:
         ordering = ['-id']
 
-# class OrderItem(models.Model):
-#     pass
-#
-# class Order(models.Model):
-#     pass
+class OrderItem(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orderitems')
+    order = models.ForeignKey('Order', on_delete=models.CASCADE, related_name='orderitems', null=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='orderitems')
+    product_option = models.ForeignKey(ProductOption, on_delete=models.CASCADE, related_name='orderitems')
+    quantity = models.PositiveIntegerField(default=1)
+
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
 
 
