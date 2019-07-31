@@ -218,7 +218,7 @@ CORS_ALLOW_CREDENTIALS = True
 
 
 CRONJOBS = [
-    ('* */0 * * *', 'products.cron.my_scheduled_job')
+    ('* 0 * * *', 'products.cron.my_scheduled_job')
 ]
 
 # 환경 변수 추가 : https://cafe.naver.com/plan99/852
