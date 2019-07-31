@@ -21,10 +21,16 @@ class UserListView(generics.ListAPIView):
             - 관리자 권한이 있는 경우, 모든 유저 리스트를 불러옵니다.
             - 관리자 권한이 없는 경우, 해당 유저의 정보만 불러옵니다.
 
+        # type
+            - django, 카카오, 구글, 네이버로 분류됩니다.
+            - django일 경우, 소셜 로그인이 아닌 오늘의 집에서 가입한 유저입니다.
+
         # 내용
             - id : 유저의 고유 ID
+            - type : 소셜 로그인 분류
             - username : 닉네임
             - email : 이메일
+            - social_profile : 소셜 로그인 프로필 이미지 URL
             - gender : 성별(1 = 남자, 2 = 여자)
             - birthday : 생년월일
             - message : 한줄 소개 내용
