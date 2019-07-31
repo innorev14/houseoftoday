@@ -100,4 +100,4 @@ FinalProject - House of Today API
     - fix: re import the products-api_views.py-PaymentCreateAPIView // re import
 
 - 19.07.31
-    - fix: accounts - serializers.py // Add UserSerializer 'social_profile' field
+    - fix: accounts - serializers.py // Add UserSerializer 'type', 'social_profile' field
