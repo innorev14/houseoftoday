@@ -539,196 +539,44 @@ class PDQnADeleteAPIView(generics.DestroyAPIView):
     queryset = PDQnA.objects.all()
 
 
-class ProductOrderCartCreateAPIView(generics.CreateAPIView):
-    """
-        로그인 중인 회원의 상품 장바구니를 생성합니다.
-
-        ---
-        # 권한
-            - 토큰 인증을 해야 합니다.
-
-        다음과 같은 내용으로 요청할 수 있으며, 생성된 값이 리턴됩니다.
-
-        # 내용
-            - product_option : "상품에 속한 상품옵션의 고유 ID"
-    """
-    renderer_classes = [JSONRenderer]
-
-    queryset = ProductOrderCart.objects.all()
-    serializer_class = ProductOrderCartCreateSerializer
-    # AllowAny를 변경해야함. 회원만 주문 가능하도록.. 임시방편.
-    permission_classes = (AllowAny,)
-
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
-
-
-class ProductOrderCartAPIView(generics.ListAPIView):
-    """
-        로그인 중인 회원의 상품 장바구니 정보를 불러옵니다.
-
-        ---
-        # 권한
-            - 토큰 인증을 해야 합니다.
-
-        # 내용
-            - id : 상품 장바구니 고유 ID
-            - brand_name : 상품의 브랜드 이름
-            - product : 상품 이름
-            - deliver : 배송
-            - deliver_fee : 배송비
-            - product_option : 상품 옵션
-            - price : 상품 가격
-            - user : 로그인한 유저의 고유 ID
-            - image : 해당 상품에 대한 대표 썸네일 이미지(1장) url
-    """
-    renderer_classes = [JSONRenderer]
-
-    queryset = ProductOrderCart.objects.all()
-    serializer_class = ProductOrderCartSerializer
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        queryset = queryset.filter(user=self.request.user.id)
-        return queryset
-
-
-class PaymentCreateAPIView(generics.CreateAPIView):
-    """
-        로그인 중인 회원 상품 장바구니 안의 상품을 결제합니다. 결제 후 결제 완료된 장바구니 안의 상품이 삭제되며, 주문상품목록에 결제된 상품이 등록됩니다.
-
-        ---
-        # 권한
-            - 토큰 인증을 해야 합니다.
-
-        토큰 인증을 하신 후, 내용없이 요청하시면 됩니다.
-    """
-    renderer_classes = [JSONRenderer]
-
-    queryset = Payment.objects.all()
-    serializer_class = PaymentCreateSerializer
-
-    # # AllowAny를 변경해야함. 회원만 주문 가능하도록.. 임시방편.
-    # permission_classes = (AllowAny,)
-
-    # ############ def perform_create(self, serializer): 사용시 주의사항 ############
-    # serializer.save는 단 한번만 이뤄져야 함. 여러번 save를 하여 각 필드마다 넣을 수 있으나,
-    # 그럴 경우 receiver에서 여러번 실행될 수 있기 때문에 save할때 한번에 여러 필드를 저장하는게 맞다.
-    # 왠만한 stackoverflow 답변 글에서도 serializer.save() 는 한번만 사용하도록 답변이 달림.
-    def perform_create(self, serializer):
-        user = self.request.user
-        total_price = user.cart.aggregate(Sum('product_option_id__price'))['product_option_id__price__sum']
-        serializer.save(user=user, product_price=total_price, deliver_price=0, total_price=total_price)
-
-
-class DirectPaymentCreateAPIView(generics.CreateAPIView):
-    """
-        로그인 중인 회원이 구매하고자 하는 상품을 바로(직접)결제합니다. 결제 후 주문상품목록에 결제된 상품이 등록됩니다.
-
-        ---
-        # 권한
-            - 토큰 인증을 해야 합니다.
-
-        토큰 인증을 하신 후 다음과 같은 내용으로 요청할 수 있습니다.
-
-        # 내용
-            - product_option : "상품에 속한 상품옵션의 고유 ID"
-
-        다음과 같이 리턴됩니다.
-
-        # 내용
-            - id : 직접결제하기의 고유 ID
-            - product_price : 선택한 상품옵션의 가격
-            - deliver_price : 배송비
-            - total_price : 최종 합산 가격
-            - created : 생성일자
-            - product_option : 선택한 상품옵션의 고유 ID
-    """
-    renderer_classes = [JSONRenderer]
-
-    queryset = DirectPayment.objects.all()
-    serializer_class = DirectPaymentCreateSerializer
-
-    # ############ def perform_create(self, serializer): 사용시 주의사항 ############
-    # serializer.save는 단 한번만 이뤄져야 함. 여러번 save를 하여 각 필드마다 넣을 수 있으나,
-    # 그럴 경우 receiver에서 여러번 실행될 수 있기 때문에 save할때 한번에 여러 필드를 저장하는게 맞다.
-    # 왠만한 stackoverflow 답변 글에서도 serializer.save() 는 한번만 사용하도록 답변이 달림.
-    def perform_create(self, serializer):
-        user = self.request.user
-        product_option_id = self.request.POST['product_option']
-        price = ProductOption.objects.get(pk=int(product_option_id)).price
-
-        serializer.save(user=user, product_price=price, deliver_price=0, total_price=price)
-
-
-class PaymentAPIView(generics.ListAPIView):
-    """
-        로그인 중인 사용자의 결제 완료된 목록을 보여줍니다.
-
-        ---
-        # 권한
-            - 토큰 인증을 해야 합니다.
-
-        # 내용
-            - id : 결제 고유 ID, 주문 번호로 활용 가능
-            - order_products : 주문한 상품 목록
-                - product : 주문한 상품 이름
-                - product_option : 주문한 상품 옵션
-            - product_price : 주문한 상품의 전체 가격
-            - deliver_price : 배송비
-            - total_price : 총 결제 가격
-            - created : "결제 완료 일자"
-            - image : 해당 상품에 대한 대표 썸네일 이미지(1장) url
-    """
-    renderer_classes = [JSONRenderer]
-
-    queryset = Payment.objects.all()
-    serializer_class = PaymentSerializer
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        queryset = queryset.filter(user=self.request.user.id)
-        return queryset
-
-
 # review 작성 시 상품의 전체 리뷰 수와 평점이 계산됨
-@receiver(post_save, sender=Review)
-def calculate_review(sender, **kwargs):
-    pd = kwargs['instance'].product
-    pd.review_count = pd.reviews.count()
-    pd.star_avg = pd.reviews.aggregate(Avg('star_score'))['star_score__avg']
-    pd.save()
+# @receiver(post_save, sender=Review)
+# def calculate_review(sender, **kwargs):
+#     pd = kwargs['instance'].product
+#     pd.review_count = pd.reviews.count()
+#     pd.star_avg = pd.reviews.aggregate(Avg('star_score'))['star_score__avg']
+#     pd.save()
 
 
 # 결제 완료 시(Payment model save) 장바구니 모델에 저장되있던 목록을 주문 목록으로 옮기고 장바구니 모델 저장 내용 삭제
-@receiver(post_save, sender=Payment)
-def after_payment(sender, **kwargs):
-    cart_delete_list = []
-    pm = kwargs['instance'].id
-    user = kwargs['instance'].user
-    pd_in_cart_num = user.cart.count()
-    for pd in range(0, pd_in_cart_num):
-        # print(user.cart.all()[pd].product_option.id)
-        OrderProduct(user_id=user.id, product_option_id=user.cart.all()[pd].product_option.id, payment_id=pm).save()
-        cart_item = ProductOrderCart.objects.all().get(Q(user_id=user.id) & Q(id=user.cart.all()[pd].id))
-        cart_delete_list.append(cart_item.id)
-
-    for idx in cart_delete_list:
-        cart_delete_item = ProductOrderCart.objects.get(pk=idx)
-        cart_delete_item.delete()
-
-
-# DirectPayment(직접결제)를 실행하게 될 경우 실행.
-@receiver(post_save, sender=DirectPayment)
-def after_direct_payment(sender, **kwargs):
-    # DirectPayment의 번호.
-    pm = kwargs['instance'].id
-    # 현재 로그인한 해당 유저의 번호.
-    user = kwargs['instance'].user
-    # 현재 선택한 상품옵션의 번호.
-    po_id = kwargs['instance'].product_option_id
-    # OrderProduct(직접결제하기) 테이블에 레코드를 저장함. ()에 저장할 필드를 적고, 단 한번만 save 시키면 됨.
-    OrderProduct(user_id=user.id, product_option_id=po_id, direct_payment_id=pm).save()
+# @receiver(post_save, sender=Payment)
+# def after_payment(sender, **kwargs):
+#     cart_delete_list = []
+#     pm = kwargs['instance'].id
+#     user = kwargs['instance'].user
+#     pd_in_cart_num = user.cart.count()
+#     for pd in range(0, pd_in_cart_num):
+#         # print(user.cart.all()[pd].product_option.id)
+#         OrderProduct(user_id=user.id, product_option_id=user.cart.all()[pd].product_option.id, payment_id=pm).save()
+#         cart_item = ProductOrderCart.objects.all().get(Q(user_id=user.id) & Q(id=user.cart.all()[pd].id))
+#         cart_delete_list.append(cart_item.id)
+#
+#     for idx in cart_delete_list:
+#         cart_delete_item = ProductOrderCart.objects.get(pk=idx)
+#         cart_delete_item.delete()
+#
+#
+# # DirectPayment(직접결제)를 실행하게 될 경우 실행.
+# @receiver(post_save, sender=DirectPayment)
+# def after_direct_payment(sender, **kwargs):
+#     # DirectPayment의 번호.
+#     pm = kwargs['instance'].id
+#     # 현재 로그인한 해당 유저의 번호.
+#     user = kwargs['instance'].user
+#     # 현재 선택한 상품옵션의 번호.
+#     po_id = kwargs['instance'].product_option_id
+#     # OrderProduct(직접결제하기) 테이블에 레코드를 저장함. ()에 저장할 필드를 적고, 단 한번만 save 시키면 됨.
+#     OrderProduct(user_id=user.id, product_option_id=po_id, direct_payment_id=pm).save()
 
 
 

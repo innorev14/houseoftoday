@@ -68,32 +68,59 @@ class PhotoComment(models.Model):
     class Meta:
         ordering = ['id']
 
-# class Housewarming(models.Model):
-#     title = models.CharField(max_length=50)
-#     created = models.CharField(max_length=30)
-#     author = models.CharField(max_length=20)
-#     # 작성자의 프로필 글
-#     author_profile = models.TextField(blank=True)
-#     # 좋아요 수
-#     like_count = models.PositiveIntegerField(default=0)
-#     # 스크랩 수
-#     scrap_count = models.PositiveIntegerField(default=0)
-#     # 조회 수
-#     hit_count = models.PositiveIntegerField(default=0)
-#     # 이미지
-#     image = models.TextField()
-#
-#     #
-#     structure = models.CharField(max_length=20)
-#     floor_space = models.CharField(max_length=10)
-#     style = models.CharField(max_length=10)
-#     work = models.CharField(max_length=10)
-#     area = models.CharField(max_length=10)
-#     period = models.CharField(max_length=10)
-#     family = models.CharField(max_length=10)
-#     detail_part = models.CharField(max_length=50)
-#     location = models.CharField(max_length=30)
-#
-#     # 댓글 수
-#     comment_count = models.PositiveIntegerField(default=0)
+class Housewarming(models.Model):
+    title = models.CharField(max_length=50)
+    created = models.CharField(max_length=30)
+    author = models.CharField(max_length=20)
+    # 작성자의 프로필 글
+    author_profile = models.TextField(blank=True)
+    # 좋아요 수
+    like_count = models.PositiveIntegerField(default=0)
+    # 스크랩 수
+    scrap_count = models.PositiveIntegerField(default=0)
+    # 조회 수
+    hit_count = models.PositiveIntegerField(default=0)
+    # 커버 이미지
+    cover_image = models.TextField()
 
+    structure = models.CharField(max_length=20)
+    floor_space = models.CharField(max_length=10)
+    style = models.CharField(max_length=10)
+    work = models.CharField(max_length=10)
+    area = models.CharField(max_length=10)
+    period = models.CharField(max_length=10)
+    family = models.CharField(max_length=10)
+    detail_part = models.CharField(max_length=50)
+    location = models.CharField(max_length=30)
+
+    # 댓글 수
+    comment_count = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return "(" + self.author + ")" + self.title
+
+    class Meta:
+        ordering = ['id']
+
+class DetailContent(models.Model):
+    title = models.CharField(max_length=50, blank=True)
+    image = models.TextField()
+    text = models.TextField()
+
+class HousewarmingComment(models.Model):
+    # 댓글이 속한 사진
+    housewarming = models.ForeignKey(Housewarming, on_delete=models.CASCADE, related_name='comments')
+    # 댓글 작성자
+    author = models.CharField(max_length=20)
+    # 작성자의 프로필 이미지
+    author_profile_image = models.TextField(blank=True)
+    # 댓글 내용
+    text = models.TextField()
+    # 댓글 생성 일자
+    created = models.CharField(max_length=20)
+
+    def __str__(self):
+        return "(" + self.author + ")" + self.text
+
+    class Meta:
+        ordering = ['id']
