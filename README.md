@@ -101,3 +101,5 @@ FinalProject - House of Today API
 
 - 19.07.31
     - fix: accounts - serializers.py // Add UserSerializer 'type', 'social_profile' field
+    - feat: add the models.py-CronLog // admin.py-CronLogAdmin // remove the api_views.py-StoreHomeView HotDealNumber (comment: Create random int code.) --> Add the cron.py-my_scheduled_job (comment: Create random int code.) // The number of 'HotDealNumber' models was set to automatically change to crontab at midnight every day.    
+    

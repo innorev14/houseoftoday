@@ -69,6 +69,10 @@ class OrderProductAdmin(admin.ModelAdmin):
     fields = ['user', 'product_option', 'payment', 'direct_payment']
     list_display = ['id', 'user', 'product_option', 'payment', 'direct_payment', 'created']
 
+# CronTab로그기록Admin
+class CronLogAdmin(admin.ModelAdmin):
+    list_display = ['id','cron_date']
+
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Product, ProductAdmin)
@@ -82,3 +86,4 @@ admin.site.register(ProductOrderCart, ProductOrderCartAdmin)
 admin.site.register(Payment, PaymentAdmin)
 admin.site.register(DirectPayment, DirectPaymentAdmin)
 admin.site.register(OrderProduct, OrderProductAdmin)
+admin.site.register(CronLog, CronLogAdmin)

@@ -216,8 +216,36 @@ SWAGGER_SETTINGS = {
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
+
 CRONJOBS = [
-    ('*/1 * * * *', 'myapp.cron.my_scheduled_job'),
+    ('* */0 * * *', 'products.cron.my_scheduled_job')
 ]
 
+# 환경 변수 추가 : https://cafe.naver.com/plan99/852
+# https://brownbears.tistory.com/15
+# 실제 만드는 법 : http://greenyant.blogspot.com/2015/04/django-crontab-quick-start-model-check.html
+
+# 한글 출력 관련 확인 명령어 : $ echo $LANG
+
+# 크론탭 실행 : python manage.py crontab show
+# 크론탭 추가 : python manage.py crontab add
+# 크론탭 삭제 : python manage.py crontab remove
+
+# 등록된 크론탭 확인 명령어 : $ crontab -l
+# 크론탭 설정 : $ crontab -e
+
+# ('분 시 일 월 요일 명령어','앱이름.파일명.함수명')
+# 첫번째 (분) : 0~59
+# 두번째 (시) : 0~23
+# 세번째 (일) : 0~31
+# 네번째 (월) : 1~12
+# 다섯번째 (요일) : 0~7 (0 또는 7 일요일, 1=월요일, 2=화요일, ...)
+# 여섯번째 (명령어) : 실행할 명령어를 한줄로 작성.
+
+# Example)
+# ('*/1 * * * *', 'products.cron.my_scheduled_job') -> 1분마다 실행
+# ('* */0 * * *', 'products.cron.my_scheduled_job') -> 매일 자정 0시마다 실행.
+
+# 로그 관련 파일 남기는 법. 단, 예시가 없어서 아직 미구현 상태.. 시간 될때 봐야할듯 합니다.
+# ('*/1 * * * *', 'products.cron.my_scheduled_job', '>> '+BASE_DIR+'/log/log_file.log'),
 

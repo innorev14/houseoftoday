@@ -270,3 +270,15 @@ class OrderProduct(models.Model):
 
     class Meta:
         ordering = ['id']
+
+
+class CronLog(models.Model):
+    cron_date = models.DateTimeField(auto_now_add=True, blank=True)
+
+    def __str__(self):
+        return str(self.cron_date)
+
+    class Meta:
+        ordering = ['-id']
+
+
