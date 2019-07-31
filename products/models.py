@@ -135,14 +135,15 @@ class Review(models.Model):
     image = models.ImageField(upload_to='store/review/%Y/%m/%d', blank=True, null=True)
     # 리뷰 내용
     comment = models.TextField()
-    # '도움이 돼요' 버튼에 대한 필드
-    helpful = models.ManyToManyField(User, related_name='helpful_reviews', blank=True, null=True)
     # 생성 일자
     created = models.DateField(auto_now_add=True)
 
     def __str__(self):
         # 객체의 이름 - 질문 작성자
         return self.user.username
+
+    def save(self, *args, **kwargs):
+        super(Review, self).save(*args, **kwargs)
 
     class Meta:
         ordering = ['id']
@@ -191,86 +192,6 @@ class HotDealNumber(models.Model):
         ordering = ['id']
 
 
-# 장바구니
-class ProductOrderCart(models.Model):
-    # 주문하는 유저
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cart')
-    # 상품 옵션
-    product_option = models.ForeignKey(ProductOption, on_delete=models.CASCADE, related_name='cart')
-
-    def __str__(self):
-        return "(" + self.user.username + ")" + self.product_option.name
-
-    class Meta:
-        ordering = ['id']
-
-    # def save(self, *args, **kwargs):
-    #     if self.product_option.product != self.product:
-    #         raise ValueError('ProductOrderItem의 product_option은 선택된 product의 옵션이어야 합니다')
-    #     super().save(*args, **kwargs)
-
-
-# 결제(장바구니를 통한)
-class Payment(models.Model):
-    # 결제하는 유저
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='order')
-    # 총 상품 금액
-    product_price = models.PositiveIntegerField(default=0)
-    # 배송비
-    deliver_price = models.PositiveIntegerField(default=0)
-    # 총결제금액, Total payment amount,
-    total_price = models.PositiveIntegerField(default=0)
-    # 생성날짜 및 시간
-    created = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return "(" + self.user.username + ")" + "주문번호:" + str(self.id)
-
-    class Meta:
-        ordering = ['id']
-
-
-# 상품에서 바로결제 누르면 결제항목으로 이동하기 위한 모델
-class DirectPayment(models.Model):
-    # 결제하는 유저
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='directorder')
-    # 주문한 상품 옵션
-    product_option = models.ForeignKey(ProductOption, on_delete=models.CASCADE, related_name='directorder')
-    # 총 상품 금액
-    product_price = models.PositiveIntegerField(default=0)
-    # 배송비
-    deliver_price = models.PositiveIntegerField(default=0)
-    # 총결제금액, Total payment amount,
-    total_price = models.PositiveIntegerField(default=0)
-    # 생성날짜 및 시간
-    created = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return "(" + self.user.username + ")" + "주문번호:" + str(self.id)
-
-    class Meta:
-        ordering = ['id']
-
-
-# 결제 후 이동한 상품목록 = 주문이 완료된 상품 목록
-class OrderProduct(models.Model):
-    # 주문한 유저
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='order_product')
-    # 주문한 상품 옵션
-    product_option = models.ForeignKey(ProductOption, on_delete=models.CASCADE, related_name='order_product')
-    # 주문한 결제 번호(장바구니를 통한 결제 관련)
-    payment = models.ForeignKey(Payment, on_delete=models.CASCADE, related_name='order_product', blank=True, null=True)
-    # 주문한 결제 번호(바로 결제하기 관련)
-    direct_payment = models.ForeignKey(DirectPayment, on_delete=models.CASCADE, related_name='order_product', blank=True, null=True)
-    # 생성 일자
-    created = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return "(" + self.user.username + ")" + self.product_option.name
-
-    class Meta:
-        ordering = ['id']
-
 
 class CronLog(models.Model):
     cron_date = models.DateTimeField(auto_now_add=True, blank=True)
@@ -280,5 +201,11 @@ class CronLog(models.Model):
 
     class Meta:
         ordering = ['-id']
+
+# class OrderItem(models.Model):
+#     pass
+#
+# class Order(models.Model):
+#     pass
 
 
