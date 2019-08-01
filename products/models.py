@@ -197,8 +197,29 @@ class HotDealNumber(models.Model):
         ordering = ['id']
 
 
+class OrderItem(models.Model):
+    # 아이템을 선택한 유저
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orderitems', null=True)
+    # 결제 완료 시, order model과의 연결을 위함
+    order = models.ForeignKey('Order', on_delete=models.CASCADE, related_name='orderitems', null=True)
+    # 선택한 상품
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='orderitems')
+    # 선택한 상품 옵션
+    product_option = models.ForeignKey(ProductOption, on_delete=models.CASCADE, related_name='orderitems')
+    # 선택한 상품 옵션 수량
+    quantity = models.PositiveIntegerField(default=1)
+
+
+class Order(models.Model):
+    # 결제한 유저
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
+
+    def __str__(self):
+        return self.user.username + "(" + self.user.type + ")"
+
 
 class CronLog(models.Model):
+    # 로그 기록 시간
     cron_date = models.DateTimeField(auto_now_add=True, blank=True)
 
     def __str__(self):
@@ -206,15 +227,3 @@ class CronLog(models.Model):
 
     class Meta:
         ordering = ['-id']
-
-class OrderItem(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orderitems')
-    order = models.ForeignKey('Order', on_delete=models.CASCADE, related_name='orderitems', null=True)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='orderitems')
-    product_option = models.ForeignKey(ProductOption, on_delete=models.CASCADE, related_name='orderitems')
-    quantity = models.PositiveIntegerField(default=1)
-
-class Order(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
-
-
