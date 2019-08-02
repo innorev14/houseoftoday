@@ -1,7 +1,9 @@
 from django.db import models
+from django.db.models import Avg
 
 from accounts.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
+
 
 class Category(models.Model):
     # 카테고리 이름
@@ -61,6 +63,12 @@ class Product(models.Model):
     deliver_fee_diff = models.CharField(max_length=100, default='없음')
     # 생성일자
     created = models.DateField(auto_now_add=True)
+    # 할인율
+    discount_rate = models.CharField(max_length=3, blank=True, null=True)
+    # 상품에 대한 리뷰 평균 평점
+    star_avg = models.DecimalField(max_digits=3, decimal_places=2, default=0)
+    # 상품에 대한 리뷰 개수
+    review_count = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         # 객체의 이름 - 상품 이름
@@ -78,7 +86,8 @@ class ProductThumnail(models.Model):
 
     def __str__(self):
         # 객체의 이름 - 썸네일 이미지의 url 주소
-        return self.image
+        # return str(self.image) + " " + str(self.product)
+        return str(self.product)
 
     class Meta:
         ordering = ['id']
@@ -122,19 +131,24 @@ class Review(models.Model):
     # 리뷰가 속한 상품
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
     # 별점
-    star_score = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(5)], default=0)
+    star_score = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)], default=0)
     # 리뷰 이미지 - url 주소 저장
     image = models.ImageField(upload_to='store/review/%Y/%m/%d', blank=True, null=True)
     # 리뷰 내용
     comment = models.TextField()
-    # '도움이 돼요' 버튼에 대한 필드
-    helpful = models.ManyToManyField(User, related_name='helpful_reviews', blank=True, null=True)
     # 생성 일자
     created = models.DateField(auto_now_add=True)
 
     def __str__(self):
         # 객체의 이름 - 질문 작성자
         return self.user.username
+
+    def save(self, *args, **kwargs):
+        super(Review, self).save(*args, **kwargs)
+        product = self.product
+        product.review_count = product.reviews.count()
+        product.star_avg = product.reviews.aggregate(Avg('star_score'))['star_score__avg']
+        product.save()
 
     class Meta:
         ordering = ['id']
@@ -167,3 +181,49 @@ class PDQnA(models.Model):
 
     class Meta:
         ordering = ['id']
+
+
+class HotDealNumber(models.Model):
+    # 랜덤 숫자를 위한 필드
+    product_rnd_number = models.PositiveIntegerField(default=0)
+    # 날짜 비교를 위한 필드
+    updated = models.DateField(auto_now=True)
+
+    def __str__(self):
+        # 객체의 이름 - 랜덤 숫자
+        return str(self.product_rnd_number)
+
+    class Meta:
+        ordering = ['id']
+
+
+class OrderItem(models.Model):
+    # 아이템을 선택한 유저
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orderitems', null=True)
+    # 결제 완료 시, order model과의 연결을 위함
+    order = models.ForeignKey('Order', on_delete=models.CASCADE, related_name='orderitems', null=True)
+    # 선택한 상품
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='orderitems')
+    # 선택한 상품 옵션
+    product_option = models.ForeignKey(ProductOption, on_delete=models.CASCADE, related_name='orderitems')
+    # 선택한 상품 옵션 수량
+    quantity = models.PositiveIntegerField(default=1)
+
+
+class Order(models.Model):
+    # 결제한 유저
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
+
+    def __str__(self):
+        return self.user.username + "(" + self.user.type + ")"
+
+
+class CronLog(models.Model):
+    # 로그 기록 시간
+    cron_date = models.DateTimeField(auto_now_add=True, blank=True)
+
+    def __str__(self):
+        return str(self.cron_date)
+
+    class Meta:
+        ordering = ['-id']

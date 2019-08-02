@@ -19,8 +19,7 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework.permissions import AllowAny
 from django.conf import settings
-from rest_framework.authtoken.views import obtain_auth_token
-from accounts.api_views import CustomObtainAuthToken
+from accounts.api_views import EmailObtainAuthToken, SocialObtainAuthToken
 
 schema_view_v1 = get_schema_view(
     openapi.Info(
@@ -37,14 +36,18 @@ schema_view_v1 = get_schema_view(
 )
 
 urlpatterns = [
-    # 관리자 페이지
+    # 관리자 경로
     path('admin/', admin.site.urls),
-    # api token
-    path('get_token/', CustomObtainAuthToken.as_view()),
-    # 유저 관련 페이지
+    # api token - 오늘의 집에서 가입한 사용자 토큰 발급
+    path('get_token/', EmailObtainAuthToken.as_view()),
+    # api token - 소셜 로그인 사용자 토큰 발급
+    path('get_token/social/', SocialObtainAuthToken.as_view()),
+    # 유저 관련 경로
     path('accounts/', include('accounts.urls')),
-    # 상품 관련 페이지
+    # 상품 관련 경로
     path('products/', include('products.urls')),
+    # 커뮤니티 관련 경로
+    path('community/', include('community.urls')),
 
     # json 파일 다운로드
     path('swagger/.json/', schema_view_v1.without_ui(cache_timeout=0), name='schema-json'),
