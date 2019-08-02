@@ -110,4 +110,7 @@ FinalProject - House of Today API
 - 19.08.01
     - fix: add the coummnity app makemigrations & migrate -> models.py-(Double the maximum_length text volume of the model.) & change settings.py-CRONJOBS (* 0 * * *) -> (0 0 * * *) (Changed the execution time of CRONJOBS)
     - fix: Update products // OrderItem and Order serializers, api_views
+
+- 19.08.02
+    - fix: Update products // OrderItem and Order serializers, api views - Add the brand_name
     

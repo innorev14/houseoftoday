@@ -113,6 +113,7 @@ class PDQnACreateSerializer(serializers.ModelSerializer):
 # OrderItem Model Response Serializer
 # Order Create 요청을 했을 때 응답하는 Serializer
 class OrderItemResponseSerializer(serializers.ModelSerializer):
+    brand_name = serializers.CharField(source='product.brand_name')
     product = serializers.CharField(source='product.name')
     product_option = serializers.CharField(source='product_option.name')
 
@@ -134,6 +135,7 @@ class OrderItemResponseSerializer(serializers.ModelSerializer):
 # OrderItem Model Serializer
 class OrderItemSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source='user.username')
+    brand_name = serializers.CharField(source='product.brand_name')
     product = serializers.CharField(source='product.name')
     deliver_fee = serializers.CharField(source='product.deliver_fee')
     deliver = serializers.CharField(source='product.deliver')
