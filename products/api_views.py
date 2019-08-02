@@ -514,6 +514,7 @@ class OrderItemListAPIView(generics.ListAPIView):
         # 내용
             - id : 장바구니 아이템의 고유 ID
             - user : 해당 유저 이름
+            - brand_name : 해당 아이템의 상품 브랜드
             - product : 해당 아이템의 상품 이름
             - deliver_fee : 배송비에 관한 내용
             - deliver : 배송에 관한 내용
@@ -553,6 +554,7 @@ class OrderItemCreateAPIView(APIView):
         # 내용
             - id : 장바구니 아이템의 고유 ID
             - user : 해당 유저 이름
+            - brand_name : 해당 아이템의 상품 브랜드
             - product : 해당 아이템의 상품 이름
             - deliver_fee : 배송비에 관한 내용
             - deliver : 배송에 관한 내용
@@ -643,6 +645,7 @@ class OrderListAPIView(generics.ListAPIView):
             - id : 주문 내역의 고유 ID
             - user : 해당 유저 이름
             - order_list : 주문한 상품의 리스트
+                - brand_name : 주문한 상품의 브랜드
                 - product : 주문한 상품의 이름
                 - product_option : 주문한 상품의 옵션
                 - quantity : 수량
@@ -691,6 +694,7 @@ class OrderFromCartCreateAPIView(APIView):
             - id : 주문 내역의 고유 ID
             - user : 해당 유저 이름
             - order_list : 주문한 상품의 리스트
+                - brand_name : 주문한 상품의 브랜드
                 - product : 주문한 상품의 이름
                 - product_option : 주문한 상품의 옵션
                 - quantity : 수량
@@ -772,6 +776,7 @@ class OrderDirectCreateAPIView(APIView):
             - id : 주문 내역의 고유 ID
             - user : 해당 유저 이름
             - order_list : 주문한 상품의 리스트
+                - brand_name : 주문한 상품의 브랜드
                 - product : 주문한 상품의 이름
                 - product_option : 주문한 상품의 옵션
                 - quantity : 수량
